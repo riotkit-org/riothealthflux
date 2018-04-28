@@ -1,0 +1,28 @@
+
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Uptime dashboard</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <style>
+            .ds-btn li{ list-style:none; float:left; padding:10px; }
+            .ds-btn li a span{padding-left:15px;padding-right:5px;width:100%;display:inline-block; text-align:left;}
+            .ds-btn li a span small{width:100%; display:inline-block; text-align:left;}
+
+            footer {
+                text-align: center;
+                margin: 10px;
+            }
+        </style>
+        {% if css %}<link href="{{ css }}" rel="stylesheet">{% endif %}
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+
+        <footer>
+            Powered by free and open source initiative, see <a href="https://github.com/Wolnosciowiec" target="_blank">Wolnościowiec</a>.
+        </footer>
+    </body>
+</html>

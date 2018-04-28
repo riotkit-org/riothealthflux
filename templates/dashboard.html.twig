@@ -1,0 +1,22 @@
+{% extends "layout.html.twig" %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        {% if title %}<h2 class="dashboard-title">{{ title }}</h2>{% endif %}
+        <ul class="ds-btn node-list">
+            {% for node in nodes %}
+            <li class="node">
+                <a class="btn btn-lg {% if node.isUp() %}btn-success{% else %}btn-danger{% endif %}" {% if canExposeUrls and node.getUrl() %} href="{{ node.getUrl() }}" target="_blank"{% endif %}>
+                    <i class="glyphicon glyphicon-tasks pull-left"></i>
+                    <span>
+                        {% if node.isUp() %}UP{% else %}DOWN{% endif %}<br>
+                        <small>{{ node.getName()|raw }}</small>
+                    </span>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

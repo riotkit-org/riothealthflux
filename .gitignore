@@ -1,0 +1,6 @@
+/vendor
+/var/cache/*
+!/var/cache/.gitkeep
+/assets/custom/*
+!/assets/custom/.gitkeep
+/.idea
