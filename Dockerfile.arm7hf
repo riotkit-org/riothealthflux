@@ -14,4 +14,7 @@ ENV UAB_PROXY ""
 ENV UAB_EXPOSE_URLS 1
 
 ADD . /var/www/html
+
+RUN [ "cross-build-start" ]
 RUN cd /var/www/html && make deploy
+RUN [ "cross-build-end" ]
