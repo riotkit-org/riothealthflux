@@ -47,8 +47,10 @@ class CachedProvider implements ServerUptimeProvider
      */
     public function handle(string $url, string $proxyAddress = '', string $proxyAuth = ''): array
     {
-        if ($this->cache->contains($this->cacheId)) {
-            return $this->cache->fetch($this->cacheId);
+        $cacheId = $this->createCacheIdForUrl($url);
+
+        if ($this->cache->contains($cacheId)) {
+            return $this->cache->fetch($cacheId);
         }
 
         $data = $this->provider->handle($url, $proxyAddress, $proxyAuth);
@@ -57,7 +59,12 @@ class CachedProvider implements ServerUptimeProvider
             return $data;
         }
 
-        $this->cache->save($this->cacheId, $data, $this->cacheLifeTime);
+        $this->cache->save($cacheId, $data, $this->cacheLifeTime);
         return $data;
+    }
+
+    private function createCacheIdForUrl(string $url): string
+    {
+        return $this->cacheId . hash('sha256', $url);
     }
 }

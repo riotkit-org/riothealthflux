@@ -36,7 +36,7 @@ class ShowServicesAvailabilityAction
         }
 
         return [
-            'nodes'         => $allNodesGrouped ? array_merge(...$allNodesGrouped) : [],
+            'nodesGrouped'  => $allNodesGrouped,
             'title'         => $this->config->get('title', ''),
             'css'           => $this->config->get('css', ''),
             'canExposeUrls' => $this->config->get('expose_url', true)
