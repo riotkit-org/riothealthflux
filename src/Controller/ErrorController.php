@@ -3,16 +3,16 @@
 namespace Wolnosciowiec\UptimeAdminBoard\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
-use \Twig_Environment;
+use Twig\Environment;
 
 class ErrorController
 {
     /**
-     * @var Twig_Environment $twig
+     * @var Environment $twig
      */
     private $twig;
 
-    public function __construct(Twig_Environment $twig)
+    public function __construct(Environment $twig)
     {
         $this->twig = $twig;
     }

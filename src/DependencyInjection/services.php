@@ -4,6 +4,7 @@ use DI\Container;
 use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\Cache\RedisCache;
 use Doctrine\Common\Cache\VoidCache;
+use Twig\Environment;
 use Wolnosciowiec\UptimeAdminBoard\Component\Config;
 use Wolnosciowiec\UptimeAdminBoard\Provider\CachedProvider;
 use Wolnosciowiec\UptimeAdminBoard\Provider\MultipleProvider;
@@ -39,9 +40,9 @@ return [
         return new \Doctrine\Common\Cache\FilesystemCache(__DIR__ . '/../../var/cache/');
     },
 
-    Twig_Environment::class => function (Container $container) {
-        return new Twig_Environment(
-            new Twig_Loader_Filesystem([__DIR__ . '/../../templates/'])
+    Twig\Environment::class => function (Container $container) {
+        return new Twig\Environment(
+            new Twig\Loader\FilesystemLoader([__DIR__ . '/../../templates/'])
         );
     },
 

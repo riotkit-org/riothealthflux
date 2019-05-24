@@ -4,8 +4,8 @@ namespace Wolnosciowiec\UptimeAdminBoard\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 use Wolnosciowiec\UptimeAdminBoard\ActionHandler\ShowServicesAvailabilityAction;
-use \Twig_Environment;
 
 class DashboardController
 {
@@ -15,11 +15,11 @@ class DashboardController
     private $handler;
 
     /**
-     * @var Twig_Environment $twig
+     * @var Environment $twig
      */
     private $twig;
 
-    public function __construct(ShowServicesAvailabilityAction $action, Twig_Environment $twig)
+    public function __construct(ShowServicesAvailabilityAction $action, Environment $twig)
     {
         $this->handler  = $action;
         $this->twig     = $twig;

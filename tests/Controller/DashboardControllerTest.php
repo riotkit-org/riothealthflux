@@ -4,7 +4,7 @@ namespace Tests\Wolnosciowiec\UptimeAdminBoard\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Tests\TestCase;
-use Twig_Environment;
+use Twig\Environment;
 use Wolnosciowiec\UptimeAdminBoard\ActionHandler\ShowServicesAvailabilityAction;
 use Wolnosciowiec\UptimeAdminBoard\Component\Config;
 use Wolnosciowiec\UptimeAdminBoard\Controller\DashboardController;
@@ -38,7 +38,7 @@ class DashboardControllerTest extends TestCase
             $kernel->getContainer()->get(Config::class)
         );
 
-        $controller = new DashboardController($handler, $kernel->getContainer()->get(Twig_Environment::class));
+        $controller = new DashboardController($handler, $kernel->getContainer()->get(Environment::class));
         $response = $controller->handle(new Request());
 
         $this->assertSame(200, $response->getStatusCode());
