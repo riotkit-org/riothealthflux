@@ -5,6 +5,7 @@ namespace Wolnosciowiec\UptimeAdminBoard;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Wolnosciowiec\UptimeAdminBoard\Controller\DashboardController;
+use Wolnosciowiec\UptimeAdminBoard\Controller\ErrorController;
 
 /**
  * Http Kernel decides which endpoint to execute
@@ -14,17 +15,30 @@ use Wolnosciowiec\UptimeAdminBoard\Controller\DashboardController;
 class HttpKernel
 {
     /**
-     * @var DashboardController $controller
+     * @var DashboardController
      */
     private $controller;
 
-    public function __construct(DashboardController $controller)
+    /**
+     * @var ErrorController
+     */
+    private $errorController;
+
+    public function __construct(DashboardController $controller, ErrorController $errorController)
     {
-        $this->controller = $controller;
+        $this->controller      = $controller;
+        $this->errorController = $errorController;
     }
 
     public function handle(Request $request): Response
     {
-        return $this->controller->handle($request);
+        try {
+            $response = $this->controller->handle($request);
+
+        } catch (\Throwable $exception) {
+            $response = $this->errorController->handle($exception);
+        }
+
+        return $response;
     }
 }

@@ -30,11 +30,14 @@ class TORProxyHandler
         int $torManagementPort,
         string $torPassword)
     {
-        $this->proxyAddress      = $proxyAddress;
+        $this->proxyAddress      = trim($proxyAddress, ' "\'');
         $this->torManagementPort = $torManagementPort;
         $this->torPassword       = $torPassword;
     }
 
+    /**
+     * @throws TorInvalidResponseError
+     */
     public function onRequestHandle(): void
     {
         if ($this->torManagementPort && $this->proxyAddress) {
@@ -47,6 +50,9 @@ class TORProxyHandler
         return fsockopen(parse_url($this->proxyAddress, PHP_URL_HOST), $this->torManagementPort, $errNo, $errStr, 30);
     }
 
+    /**
+     * @throws TorInvalidResponseError
+     */
     private function handleTorAddressChange(): void
     {
         $fp = $this->createSocketConnection();
@@ -70,11 +76,20 @@ class TORProxyHandler
         fclose($fp);
     }
 
-    private function assertValidTorResponse($fileHandler, string $message, int $exceptionCode)
+    /**
+     * @param resource $fileHandler
+     * @param string   $message
+     * @param int      $exceptionCode
+     *
+     * @throws TorInvalidResponseError
+     */
+    private function assertValidTorResponse($fileHandler, string $message, int $exceptionCode): void
     {
         $response = fread($fileHandler, 1024);
 
         if (strpos($response, '250 OK') === false) {
+            fclose($fileHandler);
+
             throw new TorInvalidResponseError($message . ', details: ' . json_encode((string) $response), $exceptionCode);
         }
     }

@@ -63,12 +63,16 @@ class UptimeRobotApi
         $this->setDebug($curl);
 
         if (curl_errno($curl) > 0) {
-            throw new \Exception('There was an error while making the request');
+            throw new \Exception('There was an error while making the request. Details: ' . \curl_error($curl));
+        }
+
+        if (\strpos($this->contents, 'Why do I have to complete a CAPTCHA?') !== false) {
+            throw new \Exception('Captcha detected, possibly this could happen when using a proxy/tor');
         }
 
         $jsonDecodeContent = json_decode($this->contents, true);
 
-        if(is_null($jsonDecodeContent)) {
+        if (is_null($jsonDecodeContent)) {
             throw new \Exception('Unable to decode JSON response');
         }
 

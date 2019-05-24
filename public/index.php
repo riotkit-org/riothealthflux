@@ -1,5 +1,8 @@
 <?php declare(strict_types=1);
 
+use Symfony\Component\HttpFoundation\Request;
+use Wolnosciowiec\UptimeAdminBoard\Kernel;
+
 require_once __DIR__ . '/../src/Kernel.php';
 
 $extensions = [
@@ -11,15 +14,15 @@ $extensions = [
     'js',
 ];
 
-$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$ext = pathinfo($path, PATHINFO_EXTENSION);
+$path = \parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$ext  = \pathinfo($path, PATHINFO_EXTENSION);
     
-if (in_array($ext, $extensions, true)) {
+if (\in_array($ext, $extensions, true)) {
     // let the server handle the request as-is
     return false;
 }
 
-$kernel = new \Wolnosciowiec\UptimeAdminBoard\Kernel();
+$kernel = new Kernel();
 $kernel->emitResponse(
-    \Symfony\Component\HttpFoundation\Request::createFromGlobals()
+    Request::createFromGlobals()
 );
