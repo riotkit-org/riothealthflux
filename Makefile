@@ -34,8 +34,11 @@ build:
 	composer install --dev
 
 ## Prepare the application to be ready to run
-deploy:
-	make build
+deploy: build
+
+## Migrate the database
+migrate:
+	./vendor/bin/phinx migrate
 
 ## Run a development web server
 run_dev_server:
@@ -48,6 +51,7 @@ test:
 ## Build x86_64 image
 build@x86_64:
 	sudo docker build . -f ./Dockerfile.x86_64 -t wolnosciowiec/uptime-admin-board
+	sudo docker tag wolnosciowiec/uptime-admin-board quay.io/riotkit/uptime-admin-board
 
 ## Build arm7hf image
 build@arm7hf:

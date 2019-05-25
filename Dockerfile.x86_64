@@ -1,4 +1,4 @@
-FROM wolnosciowiec/docker-php-app
+FROM quay.io/riotkit/php-app
 
 ENV UAB_TITLE="System monitoring"\
     UAB_PROVIDERS="" \

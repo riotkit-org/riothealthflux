@@ -2,15 +2,18 @@
 
 use DI\Container;
 use Doctrine\Common\Cache\Cache;
+use Doctrine\Common\Cache\FilesystemCache;
 use Doctrine\Common\Cache\RedisCache;
 use Doctrine\Common\Cache\VoidCache;
-use Twig\Environment;
 use Wolnosciowiec\UptimeAdminBoard\Component\Config;
 use Wolnosciowiec\UptimeAdminBoard\Provider\CachedProvider;
 use Wolnosciowiec\UptimeAdminBoard\Provider\MultipleProvider;
 use Wolnosciowiec\UptimeAdminBoard\Provider\ServerUptimeProvider;
 use Wolnosciowiec\UptimeAdminBoard\Provider\UptimeRobotProvider;
+use Wolnosciowiec\UptimeAdminBoard\Provider\WithMetricsRecordedProvider;
 use Wolnosciowiec\UptimeAdminBoard\Provider\WithTorWrapperProvider;
+use Wolnosciowiec\UptimeAdminBoard\Repository\HistoryRepository;
+use Wolnosciowiec\UptimeAdminBoard\Repository\HistorySQLiteRepository;
 use Wolnosciowiec\UptimeAdminBoard\Service\TORProxyHandler;
 
 return [
@@ -23,11 +26,11 @@ return [
         $config    = $container->get(Config::class);
         $cacheType = $config->get('cache');
 
-        if (!$cacheType) {
+        if (!$cacheType || $cacheType === 'void' || $cacheType === 'none') {
             return new VoidCache();
         }
 
-        if ($config->get('cache') === 'redis') {
+        if ($cacheType === 'redis') {
             $redis = new Redis();
             $redis->connect($config->get('redis_host'), $config->get('redis_port'));
 
@@ -37,7 +40,7 @@ return [
             return $cache;
         }
 
-        return new \Doctrine\Common\Cache\FilesystemCache(__DIR__ . '/../../var/cache/');
+        return new FilesystemCache(__DIR__ . '/../../var/cache/');
     },
 
     Twig\Environment::class => function (Container $container) {
@@ -51,8 +54,18 @@ return [
     // Application
     //
 
+    HistorySQLiteRepository::class => function (Config $config) {
+        return new HistorySQLiteRepository(
+            $config->get('db_path')
+        );
+    },
+
+    HistoryRepository::class => static function (Container $container) {
+        return $container->get(HistorySQLiteRepository::class);
+    },
+
     // STARTS: Provider chain
-    ServerUptimeProvider::class => function (Container $container) {
+    ServerUptimeProvider::class => static function (Container $container) {
         return $container->get(CachedProvider::class);
     },
 
@@ -60,7 +73,7 @@ return [
         $config = $container->get(Config::class);
 
         return new CachedProvider(
-            $container->get(WithTorWrapperProvider::class),
+            $container->get(WithMetricsRecordedProvider::class),
             $container->get(Cache::class),
             $config->get('cache_id', hash('sha256', __DIR__)),
             $config->get('cache_ttl', 60)
@@ -71,6 +84,13 @@ return [
         return new WithTorWrapperProvider(
             $container->get(MultipleProvider::class),
             $container->get(TORProxyHandler::class)
+        );
+    },
+
+    WithMetricsRecordedProvider::class => function (Container $container) {
+        return new WithMetricsRecordedProvider(
+            $container->get(WithTorWrapperProvider::class),
+            $container->get(HistoryRepository::class)
         );
     },
 

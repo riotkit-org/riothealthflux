@@ -45,12 +45,13 @@ return array_map('unescape_env_value', [
     'providers'           => get_env_array('UAB_PROVIDERS', []),
     'css'                 => get_env_string('UAB_CSS', './assets/css/zapatista.css'),
     'cache_id'            => get_env_string('UAB_CACHE_ID', hash('sha256', __DIR__)),
-    'cache_ttl'           => get_env_integer('UAB_CACHE_TTL', 1),
+    'cache_ttl'           => get_env_integer('UAB_CACHE_TTL', 60),
     'cache'               => get_env_string('UAB_CACHE', 'file'),
     'redis_host'          => get_env_string('UAB_REDIS_HOST', 'localhost'),
     'redis_port'          => get_env_integer('UAB_REDIS_PORT', 6379),
     'tor_management_port' => get_env_integer('UAB_TOR_MANAGEMENT_PORT', 9052),
     'tor_password'        => get_env_string('UAB_TOR_PASSWORD', ''),
     'proxy_address'       => get_env_string('UAB_PROXY', ''),
-    'expose_url'          => get_env_boolean('UAB_EXPOSE_URLS', true)
+    'expose_url'          => get_env_boolean('UAB_EXPOSE_URLS', true),
+    'db_path'             => get_env_string('UAB_DB_PATH', __DIR__ . '/var/db/database.sqlite3')
 ]);
