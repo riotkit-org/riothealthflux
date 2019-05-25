@@ -1,7 +1,5 @@
 <?php declare(strict_types=1);
 
-$_ENV['UAB_PROVIDERS'] = 'UptimeRobot://u411998-5becf6fc0d772b8f0d5f201d;UptimeRobot://u627870-a4afa062e18ebc27a353da91';
-
 if (!function_exists('get_env_array')) {
     global $__uab_env;
     $__uab_env = array_merge($_SERVER, $_ENV);
