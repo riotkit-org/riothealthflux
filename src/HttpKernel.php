@@ -32,6 +32,10 @@ class HttpKernel
 
     public function handle(Request $request): Response
     {
+        if (strpos($request->headers->get('User-Agent'), 'curl/') !== false) {
+            return new Response('OK');
+        }
+
         try {
             $response = $this->controller->handle($request);
 
