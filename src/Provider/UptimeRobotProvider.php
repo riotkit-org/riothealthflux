@@ -3,7 +3,7 @@
 namespace Wolnosciowiec\UptimeAdminBoard\Provider;
 
 use Wolnosciowiec\UptimeAdminBoard\Service\UptimeRobotApi;
-use Wolnosciowiec\UptimeAdminBoard\ValueObject\Node;
+use Wolnosciowiec\UptimeAdminBoard\Entity\Node;
 
 /**
  * @codeCoverageIgnore

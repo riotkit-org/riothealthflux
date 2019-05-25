@@ -6,7 +6,7 @@ use Doctrine\Common\Cache\ArrayCache;
 use Tests\TestCase;
 use Wolnosciowiec\UptimeAdminBoard\Provider\CachedProvider;
 use Wolnosciowiec\UptimeAdminBoard\Provider\DummyProvider;
-use Wolnosciowiec\UptimeAdminBoard\ValueObject\Node;
+use Wolnosciowiec\UptimeAdminBoard\Entity\Node;
 
 /**
  * @see CachedProvider

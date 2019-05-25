@@ -2,9 +2,11 @@
 
 namespace Wolnosciowiec\UptimeAdminBoard\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 use Wolnosciowiec\UptimeAdminBoard\ActionHandler\ShowServicesAvailabilityAction;
 
 class DashboardController
@@ -26,16 +28,13 @@ class DashboardController
     }
 
     /**
-     * @param Request $request
-     *
      * @return Response
-     * 
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
-     * @throws \InvalidArgumentException
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
-    public function handle(Request $request): Response
+    public function handle(): Response
     {
         return new Response(
             $this->twig->render('dashboard.html.twig', $this->handler->handle())

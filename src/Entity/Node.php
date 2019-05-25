@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Wolnosciowiec\UptimeAdminBoard\ValueObject;
+namespace Wolnosciowiec\UptimeAdminBoard\Entity;
 
 /**
  * Represents a server node that is UP or DOWN

@@ -5,7 +5,7 @@ namespace Tests\Wolnosciowiec\UptimeAdminBoard\Provider;
 use Tests\TestCase;
 use Wolnosciowiec\UptimeAdminBoard\Provider\DummyProvider;
 use Wolnosciowiec\UptimeAdminBoard\Provider\MultipleProvider;
-use Wolnosciowiec\UptimeAdminBoard\ValueObject\Node;
+use Wolnosciowiec\UptimeAdminBoard\Entity\Node;
 
 /**
  * @see MultipleProvider

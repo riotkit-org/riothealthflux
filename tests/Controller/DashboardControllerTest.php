@@ -9,7 +9,7 @@ use Wolnosciowiec\UptimeAdminBoard\ActionHandler\ShowServicesAvailabilityAction;
 use Wolnosciowiec\UptimeAdminBoard\Component\Config;
 use Wolnosciowiec\UptimeAdminBoard\Controller\DashboardController;
 use Wolnosciowiec\UptimeAdminBoard\Provider\DummyProvider;
-use Wolnosciowiec\UptimeAdminBoard\ValueObject\Node;
+use Wolnosciowiec\UptimeAdminBoard\Entity\Node;
 
 /**
  * @see DashboardController
