@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Wolnosciowiec\UptimeAdminBoard\Controller;
+namespace Riotkit\UptimeAdminBoard\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;

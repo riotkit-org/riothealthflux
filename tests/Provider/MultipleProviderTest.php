@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Tests\Wolnosciowiec\UptimeAdminBoard\Provider;
+namespace Tests\Riotkit\UptimeAdminBoard\Provider;
 
 use Tests\TestCase;
-use Wolnosciowiec\UptimeAdminBoard\Provider\DummyProvider;
-use Wolnosciowiec\UptimeAdminBoard\Provider\MultipleProvider;
-use Wolnosciowiec\UptimeAdminBoard\Entity\Node;
+use Riotkit\UptimeAdminBoard\Provider\DummyProvider;
+use Riotkit\UptimeAdminBoard\Provider\MultipleProvider;
+use Riotkit\UptimeAdminBoard\Entity\Node;
 
 /**
  * @see MultipleProvider

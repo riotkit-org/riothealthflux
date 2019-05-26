@@ -5,16 +5,16 @@ use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\Cache\FilesystemCache;
 use Doctrine\Common\Cache\RedisCache;
 use Doctrine\Common\Cache\VoidCache;
-use Wolnosciowiec\UptimeAdminBoard\Component\Config;
-use Wolnosciowiec\UptimeAdminBoard\Provider\CachedProvider;
-use Wolnosciowiec\UptimeAdminBoard\Provider\MultipleProvider;
-use Wolnosciowiec\UptimeAdminBoard\Provider\ServerUptimeProvider;
-use Wolnosciowiec\UptimeAdminBoard\Provider\UptimeRobotProvider;
-use Wolnosciowiec\UptimeAdminBoard\Provider\WithMetricsRecordedProvider;
-use Wolnosciowiec\UptimeAdminBoard\Provider\WithTorWrapperProvider;
-use Wolnosciowiec\UptimeAdminBoard\Repository\HistoryRepository;
-use Wolnosciowiec\UptimeAdminBoard\Repository\HistorySQLiteRepository;
-use Wolnosciowiec\UptimeAdminBoard\Service\TORProxyHandler;
+use Riotkit\UptimeAdminBoard\Component\Config;
+use Riotkit\UptimeAdminBoard\Provider\CachedProvider;
+use Riotkit\UptimeAdminBoard\Provider\MultipleProvider;
+use Riotkit\UptimeAdminBoard\Provider\ServerUptimeProvider;
+use Riotkit\UptimeAdminBoard\Provider\UptimeRobotProvider;
+use Riotkit\UptimeAdminBoard\Provider\WithMetricsRecordedProvider;
+use Riotkit\UptimeAdminBoard\Provider\WithTorWrapperProvider;
+use Riotkit\UptimeAdminBoard\Repository\HistoryRepository;
+use Riotkit\UptimeAdminBoard\Repository\HistorySQLiteRepository;
+use Riotkit\UptimeAdminBoard\Service\TORProxyHandler;
 
 return [
 

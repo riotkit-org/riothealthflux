@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Wolnosciowiec\UptimeAdminBoard\Repository;
+namespace Riotkit\UptimeAdminBoard\Repository;
 
-use Wolnosciowiec\UptimeAdminBoard\Entity\Node;
+use Riotkit\UptimeAdminBoard\Entity\Node;
 
 class HistorySQLiteRepository implements HistoryRepository
 {

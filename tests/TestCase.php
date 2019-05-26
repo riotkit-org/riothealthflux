@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use Wolnosciowiec\UptimeAdminBoard\Kernel;
+use Riotkit\UptimeAdminBoard\Kernel;
 
 class TestCase extends \PHPUnit\Framework\TestCase
 {

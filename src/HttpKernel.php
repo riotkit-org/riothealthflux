@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Wolnosciowiec\UptimeAdminBoard;
+namespace Riotkit\UptimeAdminBoard;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Wolnosciowiec\UptimeAdminBoard\Controller\DashboardController;
-use Wolnosciowiec\UptimeAdminBoard\Controller\ErrorController;
+use Riotkit\UptimeAdminBoard\Controller\DashboardController;
+use Riotkit\UptimeAdminBoard\Controller\ErrorController;
 
 /**
  * Http Kernel decides which endpoint to execute

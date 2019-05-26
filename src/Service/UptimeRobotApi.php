@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Wolnosciowiec\UptimeAdminBoard\Service;
+namespace Riotkit\UptimeAdminBoard\Service;
 
 /**
  * @codeCoverageIgnore

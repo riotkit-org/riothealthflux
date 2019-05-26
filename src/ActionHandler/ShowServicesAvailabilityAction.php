@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Wolnosciowiec\UptimeAdminBoard\ActionHandler;
+namespace Riotkit\UptimeAdminBoard\ActionHandler;
 
-use Wolnosciowiec\UptimeAdminBoard\Component\Config;
-use Wolnosciowiec\UptimeAdminBoard\Provider\ServerUptimeProvider;
+use Riotkit\UptimeAdminBoard\Component\Config;
+use Riotkit\UptimeAdminBoard\Provider\ServerUptimeProvider;
 
 class ShowServicesAvailabilityAction
 {

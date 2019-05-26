@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Wolnosciowiec\UptimeAdminBoard\Provider;
+namespace Riotkit\UptimeAdminBoard\Provider;
 
-use Wolnosciowiec\UptimeAdminBoard\Service\UptimeRobotApi;
-use Wolnosciowiec\UptimeAdminBoard\Entity\Node;
+use Riotkit\UptimeAdminBoard\Service\UptimeRobotApi;
+use Riotkit\UptimeAdminBoard\Entity\Node;
 
 /**
  * @codeCoverageIgnore

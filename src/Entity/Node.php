@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Wolnosciowiec\UptimeAdminBoard\Entity;
+namespace Riotkit\UptimeAdminBoard\Entity;
 
 /**
  * Represents a server node that is UP or DOWN

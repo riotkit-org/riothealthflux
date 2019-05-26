@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace Tests\Wolnosciowiec\UptimeAdminBoard\Controller;
+namespace Tests\Riotkit\UptimeAdminBoard\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Tests\TestCase;
 use Twig\Environment;
-use Wolnosciowiec\UptimeAdminBoard\ActionHandler\ShowServicesAvailabilityAction;
-use Wolnosciowiec\UptimeAdminBoard\Component\Config;
-use Wolnosciowiec\UptimeAdminBoard\Controller\DashboardController;
-use Wolnosciowiec\UptimeAdminBoard\Provider\DummyProvider;
-use Wolnosciowiec\UptimeAdminBoard\Entity\Node;
+use Riotkit\UptimeAdminBoard\ActionHandler\ShowServicesAvailabilityAction;
+use Riotkit\UptimeAdminBoard\Component\Config;
+use Riotkit\UptimeAdminBoard\Controller\DashboardController;
+use Riotkit\UptimeAdminBoard\Provider\DummyProvider;
+use Riotkit\UptimeAdminBoard\Entity\Node;
 
 /**
  * @see DashboardController

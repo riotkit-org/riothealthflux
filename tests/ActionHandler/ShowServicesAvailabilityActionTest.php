@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Tests\Wolnosciowiec\UptimeAdminBoard\ActionHandler;
+namespace Tests\Riotkit\UptimeAdminBoard\ActionHandler;
 
 use Tests\TestCase;
-use Wolnosciowiec\UptimeAdminBoard\ActionHandler\ShowServicesAvailabilityAction;
+use Riotkit\UptimeAdminBoard\ActionHandler\ShowServicesAvailabilityAction;
 
 /**
  * @see ShowServicesAvailabilityAction

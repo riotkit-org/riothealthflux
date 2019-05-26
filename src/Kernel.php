@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Wolnosciowiec\UptimeAdminBoard;
+namespace Riotkit\UptimeAdminBoard;
 
 use DI\ContainerBuilder;
 use DI\Definition\Source\DefinitionFile;

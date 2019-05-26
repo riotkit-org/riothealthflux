@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 use Symfony\Component\HttpFoundation\Request;
-use Wolnosciowiec\UptimeAdminBoard\Kernel;
+use Riotkit\UptimeAdminBoard\Kernel;
 
 require_once __DIR__ . '/../src/Kernel.php';
 

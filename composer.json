@@ -1,7 +1,7 @@
 {
     "name": "wolnosciowiec/wolnosciowiec-uptime-admin-board",
     "type": "project",
-    "license": "CC-BY-4.0",
+    "license": "Apache-2.0",
     "require": {
         "ext-json": "*",
         "ext-sqlite3": "*",
@@ -18,7 +18,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Wolnosciowiec\\UptimeAdminBoard\\": "src/"
+            "Riotkit\\UptimeAdminBoard\\": "src/"
         }
     },
     "autoload-dev": {

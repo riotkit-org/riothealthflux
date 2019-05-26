@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Wolnosciowiec\UptimeAdminBoard\Provider;
+namespace Riotkit\UptimeAdminBoard\Provider;
 
-use Wolnosciowiec\UptimeAdminBoard\Service\TORProxyHandler;
+use Riotkit\UptimeAdminBoard\Service\TORProxyHandler;
 
 /**
  * @codeCoverageIgnore

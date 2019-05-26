@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Tests\Wolnosciowiec\UptimeAdminBoard\Service;
+namespace Tests\Riotkit\UptimeAdminBoard\Service;
 
 use Tests\TestCase;
-use Wolnosciowiec\UptimeAdminBoard\Exception\TorInvalidResponseError;
-use Wolnosciowiec\UptimeAdminBoard\Service\TORProxyHandler;
+use Riotkit\UptimeAdminBoard\Exception\TorInvalidResponseError;
+use Riotkit\UptimeAdminBoard\Service\TORProxyHandler;
 
 class TORProxyHandlerTest extends TestCase
 {

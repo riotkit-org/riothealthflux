@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Tests\Wolnosciowiec\UptimeAdminBoard\Component;
+namespace Tests\Riotkit\UptimeAdminBoard\Component;
 
 use Tests\TestCase;
-use Wolnosciowiec\UptimeAdminBoard\Component\Config;
+use Riotkit\UptimeAdminBoard\Component\Config;
 
 /**
  * @see Config

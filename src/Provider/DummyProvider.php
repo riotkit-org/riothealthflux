@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Wolnosciowiec\UptimeAdminBoard\Provider;
+namespace Riotkit\UptimeAdminBoard\Provider;
 
-use Wolnosciowiec\UptimeAdminBoard\Entity\Node;
+use Riotkit\UptimeAdminBoard\Entity\Node;
 
 /**
  * @codeCoverageIgnore

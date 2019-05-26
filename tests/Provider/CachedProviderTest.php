@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Tests\Wolnosciowiec\UptimeAdminBoard\Provider;
+namespace Tests\Riotkit\UptimeAdminBoard\Provider;
 
 use Doctrine\Common\Cache\ArrayCache;
 use Tests\TestCase;
-use Wolnosciowiec\UptimeAdminBoard\Provider\CachedProvider;
-use Wolnosciowiec\UptimeAdminBoard\Provider\DummyProvider;
-use Wolnosciowiec\UptimeAdminBoard\Entity\Node;
+use Riotkit\UptimeAdminBoard\Provider\CachedProvider;
+use Riotkit\UptimeAdminBoard\Provider\DummyProvider;
+use Riotkit\UptimeAdminBoard\Entity\Node;
 
 /**
  * @see CachedProvider
