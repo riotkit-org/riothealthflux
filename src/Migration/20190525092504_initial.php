@@ -14,6 +14,9 @@ class Initial extends AbstractMigration
         $table->addColumn('url', 'text');
         $table->addColumn('status', 'boolean');
         $table->addColumn('action_time', 'datetime');
+        $table->addColumn('checked_by', 'string');
+        $table->addColumn('check_id', 'string');
+        $table->addColumn('is_current', 'boolean');
 
         $table->create();
     }

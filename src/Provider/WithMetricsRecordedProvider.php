@@ -19,10 +19,16 @@ class WithMetricsRecordedProvider implements ServerUptimeProvider
      */
     private $repository;
 
-    public function __construct(ServerUptimeProvider $provider, HistoryRepository $repository)
+    /**
+     * @var int
+     */
+    private $maxDaysToKeepHistory;
+
+    public function __construct(ServerUptimeProvider $provider, HistoryRepository $repository, int $maxDaysToKeepHistory)
     {
-        $this->provider   = $provider;
-        $this->repository = $repository;
+        $this->provider             = $provider;
+        $this->repository           = $repository;
+        $this->maxDaysToKeepHistory = $maxDaysToKeepHistory;
     }
 
     /**
@@ -42,6 +48,10 @@ class WithMetricsRecordedProvider implements ServerUptimeProvider
 
         foreach ($resolved as $node) {
             $this->repository->persist($node);
+        }
+
+        if ($this->maxDaysToKeepHistory > 0) {
+            $this->repository->removeOlderThanDays($this->maxDaysToKeepHistory);
         }
 
         return $resolved;

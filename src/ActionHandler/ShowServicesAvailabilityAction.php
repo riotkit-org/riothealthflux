@@ -4,6 +4,7 @@ namespace Riotkit\UptimeAdminBoard\ActionHandler;
 
 use Riotkit\UptimeAdminBoard\Component\Config;
 use Riotkit\UptimeAdminBoard\Provider\ServerUptimeProvider;
+use Riotkit\UptimeAdminBoard\Service\Stats\StatsProcessingService;
 
 class ShowServicesAvailabilityAction
 {
@@ -17,10 +18,16 @@ class ShowServicesAvailabilityAction
      */
     private $config;
 
-    public function __construct(ServerUptimeProvider $provider, Config $config)
+    /**
+     * @var StatsProcessingService
+     */
+    private $stats;
+
+    public function __construct(ServerUptimeProvider $provider, Config $config, StatsProcessingService $stats)
     {
-        $this->provider     = $provider;
-        $this->config       = $config;
+        $this->provider = $provider;
+        $this->config   = $config;
+        $this->stats    = $stats;
     }
     
     public function handle(): array
@@ -39,7 +46,8 @@ class ShowServicesAvailabilityAction
             'nodesGrouped'  => $allNodesGrouped,
             'title'         => $this->config->get('title', ''),
             'css'           => $this->config->get('css', ''),
-            'canExposeUrls' => $this->config->get('expose_url', true)
+            'canExposeUrls' => $this->config->get('expose_url', true),
+            'stats'         => $this->stats->retrieve()
         ];
     }
 }

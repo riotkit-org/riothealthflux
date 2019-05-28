@@ -29,11 +29,11 @@ class DashboardControllerTest extends TestCase
 
         $handler = new ShowServicesAvailabilityAction(
             new DummyProvider([
-                new Node('iwa-ait.org',    Node::STATUS_UP, 'http://iwa-ait.org'),
-                new Node('zsp.net.pl',     Node::STATUS_UP, 'http://zsp.net.pl'),
-                new Node('solfed.org.uk',  Node::STATUS_UP, 'http://www.solfed.org.uk/'),
-                new Node('cnt.es',         Node::STATUS_UP, 'http://www.cnt.es/'),
-                new Node('priamaakcia.sk', Node::STATUS_UP, 'http://www.priamaakcia.sk/')
+                new Node('iwa-ait.org',    'Dummy', Node::STATUS_UP, 'http://iwa-ait.org'),
+                new Node('zsp.net.pl',     'Dummy', Node::STATUS_UP, 'http://zsp.net.pl'),
+                new Node('solfed.org.uk',  'Dummy', Node::STATUS_UP, 'http://www.solfed.org.uk/'),
+                new Node('cnt.es',         'Dummy', Node::STATUS_UP, 'http://www.cnt.es/'),
+                new Node('priamaakcia.sk', 'Dummy', Node::STATUS_UP, 'http://www.priamaakcia.sk/')
             ]),
             $kernel->getContainer()->get(Config::class)
         );

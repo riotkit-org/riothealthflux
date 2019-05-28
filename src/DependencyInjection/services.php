@@ -14,6 +14,9 @@ use Riotkit\UptimeAdminBoard\Provider\WithMetricsRecordedProvider;
 use Riotkit\UptimeAdminBoard\Provider\WithTorWrapperProvider;
 use Riotkit\UptimeAdminBoard\Repository\HistoryRepository;
 use Riotkit\UptimeAdminBoard\Repository\HistorySQLiteRepository;
+use Riotkit\UptimeAdminBoard\Service\Stats\DisabledStatsProcessingService;
+use Riotkit\UptimeAdminBoard\Service\Stats\StatsProcessingService;
+use Riotkit\UptimeAdminBoard\Service\Stats\StatsProcessingServiceImplementation;
 use Riotkit\UptimeAdminBoard\Service\TORProxyHandler;
 
 return [
@@ -54,6 +57,18 @@ return [
     // Application
     //
 
+    StatsProcessingService::class => function (StatsProcessingServiceImplementation $service, Config $config) {
+        if ($config->get('stats_enabled')) {
+            return $service;
+        }
+
+        return new DisabledStatsProcessingService();
+    },
+
+    StatsProcessingServiceImplementation::class => function (HistoryRepository $repository) {
+        return new StatsProcessingServiceImplementation($repository);
+    },
+
     HistorySQLiteRepository::class => function (Config $config) {
         return new HistorySQLiteRepository(
             $config->get('db_path')
@@ -87,10 +102,11 @@ return [
         );
     },
 
-    WithMetricsRecordedProvider::class => function (Container $container) {
+    WithMetricsRecordedProvider::class => function (Container $container, Config $config) {
         return new WithMetricsRecordedProvider(
             $container->get(WithTorWrapperProvider::class),
-            $container->get(HistoryRepository::class)
+            $container->get(HistoryRepository::class),
+            $config->get('history_max_days')
         );
     },
 
