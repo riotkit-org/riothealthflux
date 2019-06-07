@@ -5,7 +5,7 @@ namespace Riotkit\UptimeAdminBoard\Entity;
 /**
  * Represents a server node that is UP or DOWN
  */
-class Node
+class Node implements \JsonSerializable
 {
     public const STATUS_UNKNOWN = null;
     public const STATUS_UP      = true;
@@ -93,5 +93,14 @@ class Node
         }
 
         return new \DateTimeImmutable($this->actionTime);
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'name'   => $this->getName(),
+            'id'     => $this->getCheckId(),
+            'status' => $this->getStatus()
+        ];
     }
 }

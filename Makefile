@@ -50,12 +50,12 @@ test:
 
 ## Build x86_64 image
 build@x86_64:
-	sudo docker build . -f ./Dockerfile.x86_64 -t wolnosciowiec/uptime-admin-board
+	sudo docker build . -f ./.infrastructure/Dockerfile.x86_64 -t wolnosciowiec/uptime-admin-board
 	sudo docker tag wolnosciowiec/uptime-admin-board quay.io/riotkit/uptime-admin-board
 
 ## Build arm7hf image
 build@arm7hf:
-	sudo docker build . -f ./Dockerfile.arm7hf -t wolnosciowiec/uptime-admin-board:arm7hf
+	sudo docker build -f ./.infrastructure/Dockerfile.arm7hf -t wolnosciowiec/uptime-admin-board:arm7hf
 
 ## Push x86_64 image to registry
 push@x86_64:
@@ -64,3 +64,15 @@ push@x86_64:
 ## Push arm7hf image to registry
 push@arm7hf:
 	sudo docker push wolnosciowiec/uptime-admin-board:arm7hf
+
+## Install frontend locally
+build_frontend_locally:
+	cd src_frontend && yarn install
+
+## Run development server for the frontend
+run_frontend_dev:
+	cd src_frontend && yarn serve
+
+## Turn on the development environment
+dev_up:
+	cd .infrastructure && sudo docker-compose -p uab up --build

@@ -4,8 +4,9 @@ use DI\Container;
 use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\Cache\FilesystemCache;
 use Doctrine\Common\Cache\RedisCache;
-use Doctrine\Common\Cache\VoidCache;
+use Riotkit\UptimeAdminBoard\ActionHandler\ShowServicesAvailabilityAction;
 use Riotkit\UptimeAdminBoard\Component\Config;
+use Riotkit\UptimeAdminBoard\Controller\DashboardController;
 use Riotkit\UptimeAdminBoard\Provider\CachedProvider;
 use Riotkit\UptimeAdminBoard\Provider\MultipleProvider;
 use Riotkit\UptimeAdminBoard\Provider\ServerUptimeProvider;
@@ -14,10 +15,9 @@ use Riotkit\UptimeAdminBoard\Provider\WithMetricsRecordedProvider;
 use Riotkit\UptimeAdminBoard\Provider\WithTorWrapperProvider;
 use Riotkit\UptimeAdminBoard\Repository\HistoryRepository;
 use Riotkit\UptimeAdminBoard\Repository\HistorySQLiteRepository;
-use Riotkit\UptimeAdminBoard\Service\Stats\DisabledStatsProcessingService;
 use Riotkit\UptimeAdminBoard\Service\Stats\StatsProcessingService;
-use Riotkit\UptimeAdminBoard\Service\Stats\StatsProcessingServiceImplementation;
 use Riotkit\UptimeAdminBoard\Service\TORProxyHandler;
+use Twig\Environment;
 
 return [
 
@@ -28,10 +28,6 @@ return [
     Cache::class => function (Container $container) {
         $config    = $container->get(Config::class);
         $cacheType = $config->get('cache');
-
-        if (!$cacheType || $cacheType === 'void' || $cacheType === 'none') {
-            return new VoidCache();
-        }
 
         if ($cacheType === 'redis') {
             $redis = new Redis();
@@ -57,16 +53,12 @@ return [
     // Application
     //
 
-    StatsProcessingService::class => function (StatsProcessingServiceImplementation $service, Config $config) {
-        if ($config->get('stats_enabled')) {
-            return $service;
-        }
-
-        return new DisabledStatsProcessingService();
-    },
-
-    StatsProcessingServiceImplementation::class => function (HistoryRepository $repository) {
-        return new StatsProcessingServiceImplementation($repository);
+    DashboardController::class => function (Container $container, Config $config) {
+        return new DashboardController(
+            $container->get(ShowServicesAvailabilityAction::class),
+            $container->get(Environment::class),
+            $config->get('dynamic_dashboard') ? 'dashboard-dynamic.html.twig' : 'dashboard.html.twig'
+        );
     },
 
     HistorySQLiteRepository::class => function (Config $config) {
@@ -91,7 +83,8 @@ return [
             $container->get(WithMetricsRecordedProvider::class),
             $container->get(Cache::class),
             $config->get('cache_id', hash('sha256', __DIR__)),
-            $config->get('cache_ttl', 60)
+            $config->get('cache_ttl', 60),
+            PHP_SAPI !== 'cli'
         );
     },
 

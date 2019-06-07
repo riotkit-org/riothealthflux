@@ -1,0 +1,40 @@
+FROM node:11.15.0-stretch-slim AS builder
+
+ADD src_frontend /app
+RUN apt-get update \
+    && apt-get install -y yarn make gcc g++ \
+    && cd /app \
+    && rm -rf ./node_modules \
+    && chown node:node /app -R \
+    && su node -c "yarn install" \
+    && su node -c "yarn build"
+
+
+FROM quay.io/riotkit/php-app
+
+ENV UAB_TITLE="System monitoring"\
+    UAB_PROVIDERS="" \
+    UAB_CSS="./assets/css/zapatista.css" \
+    UAB_CACHE_ID="uab_" \
+    UAB_CACHE_TTL=60 \
+    UAB_CACHE="file" \
+    UAB_REDIS_HOST="localhost" \
+    UAB_REDIS_PORT=6379 \
+    UAB_TOR_MANAGEMENT_PORT=9052 \
+    UAB_TOR_PASSWORD="" \
+    UAB_PROXY="" \
+    UAB_EXPOSE_URLS=1 \
+    UAB_STATS_ENABLED=1 \
+    UAB_HISTORY_MAX_DAYS=5 \
+    UAB_DB_PATH=../var/db/database.sqlite3 \
+    UAB_DYNAMIC_DASHBOARD=true
+
+ADD . /var/www/html
+COPY --from=builder /app/dist/* /var/www/html/public/
+
+RUN cd /var/www/html \
+    && chown www-data:www-data /var/www/html -R \
+    && su www-data -s /bin/bash -c "make deploy" \
+    && cp /var/www/html/.infrastructure/crontab /etc/cron.d/www-data \
+    && crontab /etc/cron.d/www-data
+

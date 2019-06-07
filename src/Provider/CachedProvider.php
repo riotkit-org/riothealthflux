@@ -26,12 +26,23 @@ class CachedProvider implements ServerUptimeProvider
      */
     private $cacheLifeTime;
 
-    public function __construct(ServerUptimeProvider $provider, Cache $cache, string $cacheId, int $cacheLifeTime = 60)
+    /**
+     * @var bool
+     */
+    private $readFromCacheIfAvailable;
+
+    public function __construct(
+        ServerUptimeProvider $provider,
+        Cache $cache,
+        string $cacheId,
+        int $cacheLifeTime = 60,
+        bool $readFromCacheIfAvailable = true)
     {
         $this->provider      = $provider;
         $this->cache         = $cache;
         $this->cacheId       = $cacheId;
         $this->cacheLifeTime = $cacheLifeTime;
+        $this->readFromCacheIfAvailable = $readFromCacheIfAvailable;
     }
 
     /**
@@ -49,7 +60,7 @@ class CachedProvider implements ServerUptimeProvider
     {
         $cacheId = $this->createCacheIdForUrl($url);
 
-        if ($this->cache->contains($cacheId)) {
+        if ($this->readFromCacheIfAvailable && $this->cache->contains($cacheId)) {
             return $this->cache->fetch($cacheId);
         }
 

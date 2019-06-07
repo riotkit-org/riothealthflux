@@ -1,0 +1,24 @@
+version: "2"
+services:
+    frontend:
+        build:
+            context: .
+            dockerfile: Dev.Frontend.Dockerfile
+        volumes:
+            - "../src_frontend:/app"
+        expose:
+            - "8080"
+
+    backend:
+        image: quay.io/riotkit/uptime-admin-board
+        env_file:
+            - development-variables.env
+        volumes:
+            - "../:/var/www/html"
+
+    gateway:
+        build:
+            context: .
+            dockerfile: Dev.Gateway.Dockerfile
+        ports:
+            - "8080:80"

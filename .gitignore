@@ -4,3 +4,7 @@
 /assets/custom/*
 !/assets/custom/.gitkeep
 /.idea
+/src_frontend/node_modules
+/.infrastructure/development-variables.env
+/yarn.lock
+/supervisord.*

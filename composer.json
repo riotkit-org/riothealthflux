@@ -11,10 +11,12 @@
         "symfony/http-foundation": "^4.2",
         "twig/twig": "^2.10",
         "robmorgan/phinx": "^0.10.7",
-        "doctrine/collections": "^1.6"
+        "doctrine/collections": "^1.6",
+        "symfony/console": "^4.3"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.1"
+        "phpunit/phpunit": "^7.1",
+        "symfony/var-dumper": "^4.3"
     },
     "autoload": {
         "psr-4": {
@@ -29,7 +31,9 @@
     "scripts": {
         "post-install-cmd": [
             "composer dump-autoload -o",
-            "rm ./var/cache/* -rf"
+            "rm ./var/cache/* -rf",
+            "mkdir -p ./var/db",
+            "touch ./var/db/database.sqlite3"
         ],
         "web": [
             "cd public && php -d variables_order=EGPCS -S 0.0.0.0:8019 index.php"

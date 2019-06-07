@@ -16,6 +16,8 @@ interface HistoryRepository
 
     public function findFailingCount(): int;
 
+    public function findCountPerHour(): array;
+
     /**
      * @return HistoriesCollection
      */

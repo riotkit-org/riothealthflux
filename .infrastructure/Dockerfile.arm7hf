@@ -1,4 +1,4 @@
-FROM quay.io/riotkit/php-app
+FROM wolnosciowiec/docker-php-app:arm7hf
 
 ENV UAB_TITLE="System monitoring"\
     UAB_PROVIDERS="" \
@@ -14,10 +14,16 @@ ENV UAB_TITLE="System monitoring"\
     UAB_EXPOSE_URLS=1 \
     UAB_STATS_ENABLED=1 \
     UAB_HISTORY_MAX_DAYS=5 \
-    UAB_DB_PATH=./var/db/database.sqlite3
+    UAB_DB_PATH=../var/db/database.sqlite3 \
+    UAB_DYNAMIC_DASHBOARD=true
 
 ADD . /var/www/html
 
+RUN [ "cross-build-start" ]
+
 RUN cd /var/www/html \
     && chown www-data:www-data /var/www/html -R \
-    && su www-data -s /bin/bash -c "make deploy"
+    && su www-data -s /bin/bash -c "make deploy" \
+    && cp /var/www/html/.infrastructure/crontab /etc/cron.d/www-data
+
+RUN [ "cross-build-end" ]

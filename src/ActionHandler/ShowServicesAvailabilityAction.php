@@ -3,51 +3,44 @@
 namespace Riotkit\UptimeAdminBoard\ActionHandler;
 
 use Riotkit\UptimeAdminBoard\Component\Config;
-use Riotkit\UptimeAdminBoard\Provider\ServerUptimeProvider;
-use Riotkit\UptimeAdminBoard\Service\Stats\StatsProcessingService;
+use Riotkit\UptimeAdminBoard\Repository\NodeRepository;
+use Riotkit\UptimeAdminBoard\Repository\StatsRepository;
 
 class ShowServicesAvailabilityAction
 {
     /**
-     * @var ServerUptimeProvider $provider
-     */
-    private $provider;
-
-    /**
-     * @var Config $config
+     * @var Config
      */
     private $config;
 
     /**
-     * @var StatsProcessingService
+     * @var StatsRepository
      */
-    private $stats;
+    private $statsRepository;
 
-    public function __construct(ServerUptimeProvider $provider, Config $config, StatsProcessingService $stats)
+    /**
+     * @var NodeRepository
+     */
+    private $nodeRepository;
+
+    public function __construct(Config $config, NodeRepository $nodeRepository, StatsRepository $statsRepository)
     {
-        $this->provider = $provider;
-        $this->config   = $config;
-        $this->stats    = $stats;
+        $this->config          = $config;
+        $this->statsRepository = $statsRepository;
+        $this->nodeRepository  = $nodeRepository;
     }
-    
+
     public function handle(): array
     {
-        $allNodesGrouped = [];
-
-        foreach ($this->config->get('providers') as $providerUrl) {
-            $allNodesGrouped[] = $this->provider->handle(
-                $providerUrl,
-                $this->config->get('proxy_address', ''),
-                $this->config->get('proxy_auth', '')
-            );
-        }
+        $allNodesGrouped = $this->nodeRepository->findAllGroupedNodes();
+        $stats = $this->statsRepository->findStats();
 
         return [
             'nodesGrouped'  => $allNodesGrouped,
             'title'         => $this->config->get('title', ''),
             'css'           => $this->config->get('css', ''),
             'canExposeUrls' => $this->config->get('expose_url', true),
-            'stats'         => $this->stats->retrieve()
+            'stats'         => $stats
         ];
     }
 }

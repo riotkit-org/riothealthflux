@@ -98,3 +98,8 @@ Unit tests
 ```
 make test
 ```
+
+Used software
+=============
+
+- Frontend: Special thanks to https://github.com/DesignRevision/shards-dashboard-vue project

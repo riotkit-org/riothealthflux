@@ -17,9 +17,14 @@ class HistoriesCollection extends ArrayCollection
      *
      * @return array
      */
-    public function findMostlyFailingNodes(int $max = 10): array
+    public function findMostlyFailingNodes(int $max = 15): array
     {
-        return $this->getTopNodesByScore('score', 'getFailingScore', $max, true);
+        return array_filter(
+            $this->getTopNodesByScore('score', 'getFailingScore', $max, true),
+            static function (array $element) {
+                return $element['score'] > 0;
+            }
+        );
     }
 
     /**
@@ -29,9 +34,65 @@ class HistoriesCollection extends ArrayCollection
      *
      * @return array
      */
-    public function findRecentlyFixed(int $max = 10): array
+    public function findRecentlyFixed(int $max = 15): array
     {
         return $this->getFilteredNodesBy('wasRecentlyFixed', $max);
+    }
+
+    public function findCountPerHour(): array
+    {
+        return \array_map(
+            static function (array $time) {
+                return [
+                    'up'   => \count($time[true] ?? []),
+                    'down' => \count($time[false] ?? [])
+                ];
+            },
+            $this->findPerHour()
+        );
+    }
+
+    public function findPerHour(): array
+    {
+        /**
+         * @var Node[] $allJoinedNodes
+         */
+        $allJoinedNodes = $this->map(
+            static function (NodeHistoryCollection $collection) {
+                return $collection->toArray();
+            }
+        )->toArray();
+
+        if ($allJoinedNodes) {
+            $allJoinedNodes = \array_merge(...\array_values($allJoinedNodes));
+        }
+
+        // sort ascending, so the next step will leave in $indexedByNodeAndHour only last node
+        usort($allJoinedNodes, static function (Node $a, Node $b) {
+            return $a->getTime()->getTimestamp() <=> $b->getTime()->getTimestamp();
+        });
+
+        $indexed = [];
+
+        // initially index
+        foreach ($allJoinedNodes as $node) {
+            $indexed[$node->getTime()->format('Y-m-d_H')][$node->getStatus()][$node->getCheckId()][$node->getTime()->getTimestamp()] = $node;
+        }
+
+        // leave only last check in each hour
+        foreach ($indexed as &$time) {
+            foreach ($time as &$status) {
+                foreach ($status as &$checks) {
+                    krsort($checks);
+                    $checks = \array_values($checks)[0];
+                }
+                unset($checks);
+            }
+            unset($status);
+        }
+        unset($time);
+
+        return $indexed;
     }
 
     /**
@@ -41,9 +102,14 @@ class HistoriesCollection extends ArrayCollection
      *
      * @return array
      */
-    public function findMostUnstableInLast24Hours(int $max = 10): array
+    public function findMostUnstableInLast24Hours(int $max = 15): array
     {
-        return $this->getTopNodesByScore('count', 'getFailuresInLast24Hours', $max, true);
+        return array_filter(
+            $this->getTopNodesByScore('count', 'getFailuresInLast24Hours', $max, true),
+            static function (array $element) {
+                return $element['count'] > 0;
+            }
+        );
     }
 
     private function getFilteredNodesBy(string $getter, int $maxCount): array
@@ -55,8 +121,8 @@ class HistoriesCollection extends ArrayCollection
                 }
             )
             ->map(
-                function (NodeHistoryCollection $collection) {
-                    return $collection->getNode();
+                function (NodeHistoryCollection $collection) use ($getter) {
+                    return \array_merge($collection->getNode()->jsonSerialize(), [$getter => $collection->$getter()]);
                 }
             )
             ->toArray();

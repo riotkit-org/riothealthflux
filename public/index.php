@@ -24,5 +24,5 @@ if (\in_array($ext, $extensions, true)) {
 
 $kernel = new Kernel();
 $kernel->emitResponse(
-    Request::createFromGlobals()
+    $kernel->executeRequest(Request::createFromGlobals())
 );

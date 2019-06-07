@@ -23,10 +23,10 @@ class NodeHistoryCollection extends ArrayCollection
         $stat = [true => 0, false => 0];
 
         foreach ($this->toArray() as $node) {
-            $stat[$node->getStatus()] = $node;
+            $stat[$node->getStatus()]++;
         }
 
-        return ($stat[false] / ($stat[true] + $stat[false])) * 100;
+        return floor(($stat[false] / ($stat[true] + $stat[false])) * 100);
     }
 
     /**
@@ -35,14 +35,14 @@ class NodeHistoryCollection extends ArrayCollection
      *
      * @param int $maxChecks
      *
-     * @return bool
+     * @return null|int Last check, that was failing
      */
-    public function wasRecentlyFixed(int $maxChecks = 5): bool
+    public function wasRecentlyFixed(int $maxChecks = 50): ?int
     {
         $last = $this->last();
 
         if (!$last->isUp()) {
-            return false;
+            return null;
         }
 
         // check if any of previous X checks were failing
@@ -51,16 +51,20 @@ class NodeHistoryCollection extends ArrayCollection
         $lastChecks = \array_slice($this->toArray(), ($maxChecks + 1) * -1, $maxChecks, true);
 
         if (!$lastChecks) {
-            return false;
+            return null;
         }
 
+        $checkNum = 0;
+
         foreach ($lastChecks as $check) {
+            $checkNum++;
+
             if (!$check->isUp()) {
-                return true;
+                return $checkNum;
             }
         }
 
-        return false;
+        return null;
     }
 
     public function getFailuresInLast24Hours(): int

@@ -54,6 +54,39 @@ class HistorySQLiteRepository implements HistoryRepository
         );
     }
 
+    public function findCountPerHour(): array
+    {
+        $result = $this->q(
+            'SELECT status, strftime("%d-%m-%Y %H", action_time) as hour FROM nodes_history
+             GROUP BY status, strftime("%d-%m-%Y %H", action_time), id'
+        );
+
+        $raw = $result->fetchAll();
+
+        var_dump($raw);
+        die();
+
+        $map = \array_map(
+            static function (array $row) {
+                return [
+                    'date'   => $row['hour'],
+                    'count'  => $row['COUNT(id)'],
+                    'status' => (bool) $row['status']
+                ];
+            },
+            $raw
+        );
+
+        \usort($map, static function (array $a, array $b) {
+            return \strtotime($a['date'] . ':00:00') <=> \strtotime($b['date'] . ':00:00');
+        });
+
+        return [
+            'successes' => \array_filter($map, function (array $entry) { return $entry['status']; }),
+            'failures'  => \array_filter($map, function (array $entry) { return !$entry['status']; })
+        ];
+    }
+
     public function findFailingCount(): int
     {
         $result = $this->q('

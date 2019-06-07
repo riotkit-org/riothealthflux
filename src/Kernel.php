@@ -6,6 +6,7 @@ use DI\ContainerBuilder;
 use DI\Definition\Source\DefinitionFile;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -34,10 +35,21 @@ class Kernel
      * @codeCoverageIgnore
      *
      * @param Request $request
+     *
+     * @return Response
      */
-    public function emitResponse(Request $request)
+    public function executeRequest(Request $request): Response
     {
-        $response = $this->container->get(HttpKernel::class)->handle($request);
+        return $this->container->get(HttpKernel::class)->handle($request);
+    }
+
+    /**
+     * @codeCoverageIgnore
+     *
+     * @param Response $response
+     */
+    public function emitResponse(Response $response)
+    {
         $response->send();
     }
 
