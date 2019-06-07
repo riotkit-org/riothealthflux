@@ -53,17 +53,9 @@ build@x86_64:
 	sudo docker build . -f ./.infrastructure/Dockerfile.x86_64 -t wolnosciowiec/uptime-admin-board
 	sudo docker tag wolnosciowiec/uptime-admin-board quay.io/riotkit/uptime-admin-board
 
-## Build arm7hf image
-build@arm7hf:
-	sudo docker build -f ./.infrastructure/Dockerfile.arm7hf -t wolnosciowiec/uptime-admin-board:arm7hf
-
 ## Push x86_64 image to registry
 push@x86_64:
 	sudo docker push wolnosciowiec/uptime-admin-board
-
-## Push arm7hf image to registry
-push@arm7hf:
-	sudo docker push wolnosciowiec/uptime-admin-board:arm7hf
 
 ## Install frontend locally
 build_frontend_locally:

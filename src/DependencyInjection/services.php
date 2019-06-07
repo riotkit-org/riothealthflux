@@ -7,7 +7,6 @@ use Doctrine\Common\Cache\RedisCache;
 use Riotkit\UptimeAdminBoard\ActionHandler\ShowServicesAvailabilityAction;
 use Riotkit\UptimeAdminBoard\Component\Config;
 use Riotkit\UptimeAdminBoard\Controller\DashboardController;
-use Riotkit\UptimeAdminBoard\Provider\CachedProvider;
 use Riotkit\UptimeAdminBoard\Provider\MultipleProvider;
 use Riotkit\UptimeAdminBoard\Provider\ServerUptimeProvider;
 use Riotkit\UptimeAdminBoard\Provider\UptimeRobotProvider;
@@ -15,7 +14,6 @@ use Riotkit\UptimeAdminBoard\Provider\WithMetricsRecordedProvider;
 use Riotkit\UptimeAdminBoard\Provider\WithTorWrapperProvider;
 use Riotkit\UptimeAdminBoard\Repository\HistoryRepository;
 use Riotkit\UptimeAdminBoard\Repository\HistorySQLiteRepository;
-use Riotkit\UptimeAdminBoard\Service\Stats\StatsProcessingService;
 use Riotkit\UptimeAdminBoard\Service\TORProxyHandler;
 use Twig\Environment;
 
@@ -73,19 +71,7 @@ return [
 
     // STARTS: Provider chain
     ServerUptimeProvider::class => static function (Container $container) {
-        return $container->get(CachedProvider::class);
-    },
-
-    CachedProvider::class => function (Container $container) {
-        $config = $container->get(Config::class);
-
-        return new CachedProvider(
-            $container->get(WithMetricsRecordedProvider::class),
-            $container->get(Cache::class),
-            $config->get('cache_id', hash('sha256', __DIR__)),
-            $config->get('cache_ttl', 60),
-            PHP_SAPI !== 'cli'
-        );
+        return $container->get(WithMetricsRecordedProvider::class);
     },
 
     WithTorWrapperProvider::class => function (Container $container) {

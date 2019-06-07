@@ -15,8 +15,6 @@ FROM quay.io/riotkit/php-app
 ENV UAB_TITLE="System monitoring"\
     UAB_PROVIDERS="" \
     UAB_CSS="./assets/css/zapatista.css" \
-    UAB_CACHE_ID="uab_" \
-    UAB_CACHE_TTL=60 \
     UAB_CACHE="file" \
     UAB_REDIS_HOST="localhost" \
     UAB_REDIS_PORT=6379 \
@@ -36,5 +34,6 @@ RUN cd /var/www/html \
     && chown www-data:www-data /var/www/html -R \
     && su www-data -s /bin/bash -c "make deploy" \
     && cp /var/www/html/.infrastructure/crontab /etc/cron.d/www-data \
-    && crontab /etc/cron.d/www-data
-
+    && crontab /etc/cron.d/www-data \
+    && cp /var/www/html/.infrastructure/on-entrypoint.sh /entrypoint.d/ \
+    && chmod +x /entrypoint.d/on-entrypoint.sh

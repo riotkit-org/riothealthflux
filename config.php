@@ -44,8 +44,6 @@ return array_map('unescape_env_value', [
     'title'               => get_env_string('UAB_TITLE', 'System monitoring'),
     'providers'           => get_env_array('UAB_PROVIDERS', []),
     'css'                 => get_env_string('UAB_CSS', './assets/css/zapatista.css'),
-    'cache_id'            => get_env_string('UAB_CACHE_ID', hash('sha256', __DIR__)),
-    'cache_ttl'           => get_env_integer('UAB_CACHE_TTL', 60),
     'cache'               => get_env_string('UAB_CACHE', 'file'),
     'redis_host'          => get_env_string('UAB_REDIS_HOST', 'localhost'),
     'redis_port'          => get_env_integer('UAB_REDIS_PORT', 6379),
