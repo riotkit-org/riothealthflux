@@ -63,9 +63,6 @@ class HistorySQLiteRepository implements HistoryRepository
 
         $raw = $result->fetchAll();
 
-        var_dump($raw);
-        die();
-
         $map = \array_map(
             static function (array $row) {
                 return [
