@@ -1,3 +1,4 @@
 #!/bin/bash
 
-su www-data -s /bin/bash -c "cd /var/www/html && php ./bin/console background-process" &
+echo " >> Pre-fetching initial data"
+sudo -u www-data /bin/bash -c "cd /var/www/html && php ./bin/console background-process" &

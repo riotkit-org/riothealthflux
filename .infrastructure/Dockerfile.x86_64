@@ -28,12 +28,20 @@ ENV UAB_TITLE="System monitoring"\
     UAB_DYNAMIC_DASHBOARD=true
 
 ADD . /var/www/html
-COPY --from=builder /app/dist/* /var/www/html/public/
+COPY --from=builder /app/dist /var/www/html/public/dist
 
 RUN cd /var/www/html \
+    && mv /var/www/html/public/dist/* /var/www/html/public/ \
+    && rmdir public/dist \
     && chown www-data:www-data /var/www/html -R \
+    \
     && su www-data -s /bin/bash -c "make deploy" \
-    && cp /var/www/html/.infrastructure/crontab /etc/cron.d/www-data \
-    && crontab /etc/cron.d/www-data \
+    \
+    && cp /var/www/html/.infrastructure/synchronous-background-process.sh / \
+    && cp /var/www/html/.infrastructure/etc / -R \
     && cp /var/www/html/.infrastructure/on-entrypoint.sh /entrypoint.d/ \
-    && chmod +x /entrypoint.d/on-entrypoint.sh
+    && chmod +x /entrypoint.d/on-entrypoint.sh \
+    \
+    && apt-get update \
+    && apt-get install sudo -y \
+    && apt-get clean

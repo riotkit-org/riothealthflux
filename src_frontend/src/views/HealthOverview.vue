@@ -1,5 +1,10 @@
 <template>
     <d-container fluid class="main-content-container px-4">
+        <d-alert class="alert-royal-blue" show v-if="backendInitializationInProgress">
+            <i class="fa fa-info mx-2"></i>
+            The dashboard is not ready yet, please wait a few minutes until the data will be initially processed...
+        </d-alert>
+
         <div v-if="ready">
             <d-row no-gutters class="page-header py-4">
                 <d-col col sm="4" class="text-center text-sm-left mb-4 mb-sm-0">
@@ -85,7 +90,8 @@
                 mostUnstableIn24Hours: [],
                 topFailing: [],
                 recentlyResolved: [],
-                ready: false
+                ready: false,
+                backendInitializationInProgress: false
             }
         },
 
@@ -104,8 +110,16 @@
                 this.$http.get('/api')
                     .then(response => response.json())
                     .then(json => {
-                        lThis.ready = true;
                         lThis.title = json.title;
+
+                        if (typeof json.stats.mostUnstableInCurrent24Hours == 'undefined') {
+                            lThis.backendInitializationInProgress = true;
+                            lThis.ready = false;
+                            return
+                        }
+
+                        lThis.ready = true;
+                        lThis.backendInitializationInProgress = false;
                         lThis.current.failingCount = json.stats.failingChecks;
                         lThis.current.successCount = json.stats.succeedingChecks;
                         lThis.current.checks = json.stats.nodesOrderedByStatus;

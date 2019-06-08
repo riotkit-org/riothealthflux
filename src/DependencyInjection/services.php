@@ -23,7 +23,7 @@ return [
     // Infrastructure
     //
     
-    Cache::class => function (Container $container) {
+    Cache::class => static function (Container $container) {
         $config    = $container->get(Config::class);
         $cacheType = $config->get('cache');
 
@@ -40,9 +40,12 @@ return [
         return new FilesystemCache(__DIR__ . '/../../var/cache/');
     },
 
-    Twig\Environment::class => function (Container $container) {
+    Twig\Environment::class => static function () {
         return new Twig\Environment(
-            new Twig\Loader\FilesystemLoader([__DIR__ . '/../../templates/'])
+            new Twig\Loader\FilesystemLoader([
+                __DIR__ . '/../../templates/',
+                __DIR__ . '/../../public/'
+            ])
         );
     },
 
@@ -51,15 +54,15 @@ return [
     // Application
     //
 
-    DashboardController::class => function (Container $container, Config $config) {
+    DashboardController::class => static function (Container $container, Config $config) {
         return new DashboardController(
             $container->get(ShowServicesAvailabilityAction::class),
             $container->get(Environment::class),
-            $config->get('dynamic_dashboard') ? 'dashboard-dynamic.html.twig' : 'dashboard.html.twig'
+            $config->get('dynamic_dashboard') ? 'index.html' : 'dashboard.html.twig'
         );
     },
 
-    HistorySQLiteRepository::class => function (Config $config) {
+    HistorySQLiteRepository::class => static function (Config $config) {
         return new HistorySQLiteRepository(
             $config->get('db_path')
         );
@@ -74,14 +77,14 @@ return [
         return $container->get(WithMetricsRecordedProvider::class);
     },
 
-    WithTorWrapperProvider::class => function (Container $container) {
+    WithTorWrapperProvider::class => static function (Container $container) {
         return new WithTorWrapperProvider(
             $container->get(MultipleProvider::class),
             $container->get(TORProxyHandler::class)
         );
     },
 
-    WithMetricsRecordedProvider::class => function (Container $container, Config $config) {
+    WithMetricsRecordedProvider::class => static function (Container $container, Config $config) {
         return new WithMetricsRecordedProvider(
             $container->get(WithTorWrapperProvider::class),
             $container->get(HistoryRepository::class),
@@ -89,14 +92,14 @@ return [
         );
     },
 
-    MultipleProvider::class => function (Container $container) {
+    MultipleProvider::class => static function (Container $container) {
         return new MultipleProvider([
             $container->get(UptimeRobotProvider::class)
         ]);
     },
     // ENDS: Provider chain
 
-    TORProxyHandler::class => function (Container $container) {
+    TORProxyHandler::class => static function (Container $container) {
         $config = $container->get(Config::class);
 
         return new TORProxyHandler(
@@ -106,7 +109,7 @@ return [
         );
     },
 
-    Config::class => function () {
+    Config::class => static function () {
         return new Config(require __DIR__ . '/../../config.php');
     }
 
