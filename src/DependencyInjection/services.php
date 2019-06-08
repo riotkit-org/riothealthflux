@@ -64,7 +64,8 @@ return [
 
     HistorySQLiteRepository::class => static function (Config $config) {
         return new HistorySQLiteRepository(
-            $config->get('db_path')
+            $config->get('db_path'),
+            $config->get('expose_url')
         );
     },
 
@@ -97,6 +98,11 @@ return [
             $container->get(UptimeRobotProvider::class)
         ]);
     },
+
+    UptimeRobotProvider::class => static function (Config $config) {
+        return new UptimeRobotProvider($config->get('expose_url'));
+    },
+
     // ENDS: Provider chain
 
     TORProxyHandler::class => static function (Container $container) {

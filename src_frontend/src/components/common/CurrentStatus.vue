@@ -11,7 +11,11 @@
                     <span class="text-semibold text-fiord-blue">
                         <span class="text-danger" v-if="!item.status"><i class="material-icons">clear</i></span>
                         <span class="text-success" v-if="item.status"><i class="material-icons">check</i></span>
-                        <span v-html="item.name"></span>
+                        &nbsp;
+                        <a :href="item.url" target="_blank" class="statusLink" v-if="item.url">
+                            <span v-html="item.name"></span>
+                        </a>
+                        <span v-html="item.name" v-if="!item.url"></span>
                     </span>
                 </d-list-group-item>
             </d-list-group>
@@ -46,3 +50,9 @@
         },
     };
 </script>
+
+<style>
+    .statusLink {
+        color: black;
+    }
+</style>

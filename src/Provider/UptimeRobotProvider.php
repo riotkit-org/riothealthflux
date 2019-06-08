@@ -13,6 +13,16 @@ class UptimeRobotProvider implements ServerUptimeProvider
     private const CHECK_TYPE = 'UptimeRobot';
 
     /**
+     * @var bool bool
+     */
+    private $canExposeUrls;
+
+    public function __construct(bool $canExposeUrls)
+    {
+        $this->canExposeUrls = $canExposeUrls;
+    }
+
+    /**
      * @inheritdoc
      */
     public function handle(string $url, string $proxyAddress = '', string $proxyAuth = ''): array
@@ -35,7 +45,9 @@ class UptimeRobotProvider implements ServerUptimeProvider
                 $monitor['friendlyname'],
                 self::CHECK_TYPE,
                 (int) $monitor['status'] === 2 ? Node::STATUS_UP : Node::STATUS_DOWN,
-                $monitor['url'] ?? ''
+                $monitor['url'] ?? '',
+                null,
+                $this->canExposeUrls
             );
         }
 

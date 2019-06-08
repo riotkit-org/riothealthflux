@@ -14,13 +14,14 @@ class HistorySQLiteRepository implements HistoryRepository
     private $conn;
 
     /**
-     * @var Node[]
+     * @var bool
      */
-    private $all;
+    private $canExposeUrls;
 
-    public function __construct(string $path)
+    public function __construct(string $path, bool $canExposeUrls)
     {
-        $this->conn = new \PDO('sqlite:' . $path);
+        $this->conn          = new \PDO('sqlite:' . $path);
+        $this->canExposeUrls = $canExposeUrls;
     }
 
     public function persist(Node $node): void
@@ -150,7 +151,8 @@ class HistorySQLiteRepository implements HistoryRepository
             $row['checked_by'],
             (bool) $row['status'],
             $row['url'],
-            $row['action_time']
+            $row['action_time'],
+            $this->canExposeUrls
         );
     }
 

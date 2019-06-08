@@ -18,7 +18,7 @@ class Config
      * @param string $key
      * @param array|int|string|null $default
      *
-     * @return array|int|string|null
+     * @return array|int|string|null|bool
      */
     public function get(string $key, $default = null)
     {
