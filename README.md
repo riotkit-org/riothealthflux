@@ -1,5 +1,5 @@
-Wolnościowiec Uptime Admin Board
-================================
+RiotKit's Uptime Admin Board
+============================
 
 The goal of the project was to have a single panel for each monitoring service.
 Creator: I'm a social sysadmin of many non-profit projects, they all have separated accounts, so for me
