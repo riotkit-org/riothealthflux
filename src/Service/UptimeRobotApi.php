@@ -72,8 +72,8 @@ class UptimeRobotApi
 
         $jsonDecodeContent = json_decode($this->contents, true);
 
-        if (is_null($jsonDecodeContent)) {
-            throw new \Exception('Unable to decode JSON response');
+        if ($jsonDecodeContent === null) {
+            throw new \Exception('Unable to decode JSON response: ' . $this->contents);
         }
 
         return $jsonDecodeContent;
@@ -91,7 +91,7 @@ class UptimeRobotApi
         $conf = [
             CURLOPT_HEADER => false,
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYPEER => true,
             CURLOPT_FOLLOWLOCATION => true
         ];
 
