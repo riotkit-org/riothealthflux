@@ -54,5 +54,6 @@ return array_map('unescape_env_value', [
     'db_path'             => realpath(get_env_string('UAB_DB_PATH', __DIR__ . '/var/db/database.sqlite3')),
     'history_max_days'    => get_env_integer('UAB_HISTORY_MAX_DAYS', 5),
     'stats_enabled'       => get_env_boolean('UAB_STATS_ENABLED', true),
-    'dynamic_dashboard'   => get_env_boolean('UAB_DYNAMIC_DASHBOARD', true)
+    'dynamic_dashboard'   => get_env_boolean('UAB_DYNAMIC_DASHBOARD', true),
+    'log_path'            => get_env_string('UAB_LOG_PATH', './uptime-admin-board.log')
 ]);

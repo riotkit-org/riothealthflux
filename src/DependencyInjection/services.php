@@ -4,6 +4,9 @@ use DI\Container;
 use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\Cache\FilesystemCache;
 use Doctrine\Common\Cache\RedisCache;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+use Psr\Log\LoggerInterface;
 use Riotkit\UptimeAdminBoard\ActionHandler\ShowServicesAvailabilityAction;
 use Riotkit\UptimeAdminBoard\Component\Config;
 use Riotkit\UptimeAdminBoard\Controller\DashboardController;
@@ -47,6 +50,20 @@ return [
                 __DIR__ . '/../../public/'
             ])
         );
+    },
+
+    LoggerInterface::class => static function (Config $config) {
+        $logger = new Logger('uptime-admin-board');
+
+        if (PHP_SAPI === 'cli') {
+            $logger->pushHandler(new StreamHandler('php://stdout', Logger::INFO));
+        }
+
+        if ($config->get('log_path', '')) {
+            $logger->pushHandler(new StreamHandler($config->get('log_path'), Logger::INFO));
+        }
+
+        return $logger;
     },
 
 
@@ -94,9 +111,10 @@ return [
     },
 
     MultipleProvider::class => static function (Container $container) {
-        return new MultipleProvider([
-            $container->get(UptimeRobotProvider::class)
-        ]);
+        return new MultipleProvider(
+            [$container->get(UptimeRobotProvider::class)],
+            $container->get(LoggerInterface::class)
+        );
     },
 
     UptimeRobotProvider::class => static function (Config $config) {
