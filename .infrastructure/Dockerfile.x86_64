@@ -25,12 +25,15 @@ ENV UAB_TITLE="System monitoring"\
     UAB_STATS_ENABLED=1 \
     UAB_HISTORY_MAX_DAYS=5 \
     UAB_DB_PATH=../var/db/database.sqlite3 \
-    UAB_DYNAMIC_DASHBOARD=true
+    UAB_DYNAMIC_DASHBOARD=true \
+    UAB_LOG_PATH=/var/log/uptime-admin-board.log
 
 ADD . /var/www/html
 COPY --from=builder /app/dist /var/www/html/public/dist
 
 RUN cd /var/www/html \
+    && touch /var/log/uptime-admin-board.log \
+    && chown www-data:www-data /var/log/uptime-admin-board.log \
     && mv /var/www/html/public/dist/* /var/www/html/public/ \
     && rmdir public/dist \
     && chown www-data:www-data /var/www/html -R \
