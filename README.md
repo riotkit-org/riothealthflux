@@ -1,11 +1,12 @@
-Wolnościowiec Uptime Admin Board
-================================
+RiotKit's Server Uptime Admin Board
+===================================
 
 The goal of the project was to have a single panel for each monitoring service.
-Creator: I'm a social sysadmin of many non-profit projects, they all have separated accounts, so for me
-it's better to have everything glued together.
 
-Created for the anarchist movement.
+**Creator: I'm a social SysAdmin/DevOps of many non-profit projects, they all have separated accounts, so for me
+it's better to have everything glued together.**
+
+Created for the Anarchist movement.
 
 Special thanks:
 - Cory Kennedy-Darby (we forked his `ckdarby/php-uptimerobot` library on MIT license)
@@ -46,6 +47,11 @@ export UAB_CSS=./assets/css/zapatista.css
 #   If the dashboard is public then value can be set to 0
 #
 export UAB_EXPOSE_URLS=1
+
+#
+# Logging
+#
+UAB_LOG_PATH=/var/log/uptime-admin-board.log
 
 #
 # Cache support
