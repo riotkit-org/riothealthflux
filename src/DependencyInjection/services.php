@@ -3,9 +3,10 @@
 use DI\Container;
 use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\Cache\FilesystemCache;
-use Doctrine\Common\Cache\RedisCache;
+use Doctrine\Common\Cache\PredisCache;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Predis\Client as PredisClient;
 use Psr\Log\LoggerInterface;
 use Riotkit\UptimeAdminBoard\ActionHandler\ShowServicesAvailabilityAction;
 use Riotkit\UptimeAdminBoard\Component\Config;
@@ -31,11 +32,11 @@ return [
         $cacheType = $config->get('cache');
 
         if ($cacheType === 'redis') {
-            $redis = new Redis();
-            $redis->connect($config->get('redis_host'), $config->get('redis_port'));
-
-            $cache = new RedisCache();
-            $cache->setRedis($redis);
+            $cache = new PredisCache(new PredisClient([
+                'scheme' => 'tcp',
+                'host'   => $config->get('redis_host'),
+                'port'   => $config->get('redis_port')
+            ]));
 
             return $cache;
         }
