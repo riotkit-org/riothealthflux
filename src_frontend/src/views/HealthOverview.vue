@@ -36,7 +36,7 @@
                         </d-col>
 
                         <d-col lg="6" md="6" sm="12" class="mb-4" v-if="topFailing.length">
-                            <top-failing title="Top failing / Lowest downtime" :dataset="topFailing"/>
+                            <top-failing title="Top failing / Lowest uptime" :dataset="topFailing"/>
                         </d-col>
 
                         <d-col lg="6" md="6" sm="12" class="mb-4" v-if="mostUnstableIn24Hours.length">
