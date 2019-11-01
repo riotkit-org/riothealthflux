@@ -2,6 +2,7 @@
 
 namespace Tests\Riotkit\UptimeAdminBoard\Provider;
 
+use Psr\Log\LoggerInterface;
 use Tests\TestCase;
 use Riotkit\UptimeAdminBoard\Provider\DummyProvider;
 use Riotkit\UptimeAdminBoard\Provider\MultipleProvider;
@@ -20,7 +21,7 @@ class MultipleProviderTest extends TestCase
         $multipleProvider = new MultipleProvider([
             new DummyProvider([new Node('iwa-ait.org', 'Dummy', Node::STATUS_UP, 'http://iwa-ait.org')], false),
             new DummyProvider([new Node('iwa-ait.org', 'Dummy', Node::STATUS_UNKNOWN)], true)
-        ]);
+        ], $this->createMock(LoggerInterface::class));
 
         $this->assertCount(1, $multipleProvider->handle('DummyProvider://some-api-key'));
     }
@@ -33,7 +34,7 @@ class MultipleProviderTest extends TestCase
         $multipleProvider = new MultipleProvider([
             new DummyProvider([new Node('iwa-ait.org', 'Dummy', Node::STATUS_UP, 'http://iwa-ait.org')], false),
             new DummyProvider([new Node('iwa-ait.org', 'Dummy', Node::STATUS_UNKNOWN)], false)
-        ]);
+        ], $this->createMock(LoggerInterface::class));
 
         $this->assertCount(0, $multipleProvider->handle('DummyProvider://some-api-key'));
     }
