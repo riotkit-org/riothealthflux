@@ -47,6 +47,7 @@ return array_map('unescape_env_value', [
     'cache'               => get_env_string('UAB_CACHE', 'file'),
     'redis_host'          => get_env_string('UAB_REDIS_HOST', 'localhost'),
     'redis_port'          => get_env_integer('UAB_REDIS_PORT', 6379),
+    'redis_prefix'        => get_env_string('UAB_REDIS_PREFIX', 'org.riotkit.dashboard_'),
     'tor_management_port' => get_env_integer('UAB_TOR_MANAGEMENT_PORT', 9052),
     'tor_password'        => get_env_string('UAB_TOR_PASSWORD', ''),
     'proxy_address'       => get_env_string('UAB_PROXY', ''),

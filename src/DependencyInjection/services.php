@@ -35,7 +35,8 @@ return [
             $cache = new PredisCache(new PredisClient([
                 'scheme' => 'tcp',
                 'host'   => $config->get('redis_host'),
-                'port'   => $config->get('redis_port')
+                'port'   => $config->get('redis_port'),
+                'prefix' => $config->get('redis_prefix')
             ]));
 
             return $cache;

@@ -114,8 +114,9 @@ export UAB_CACHE=file       # defaults to "file", available: file|redis
 # -------------
 #   When UAB_CACHE=redis, then those settings are required to be correct
 #
-export UAB_REDIS_HOST=localhost # optional, defaults to "localhost"
-export UAB_REDIS_PORT=6379      # optional, defauts to 6379
+export UAB_REDIS_HOST=localhost                  # optional, defaults to "localhost"
+export UAB_REDIS_PORT=6379                       # optional, defauts to 6379
+export UAB_REDIS_PREFIX=org.riotkit.dashboard_   # redis keys prefix
 
 #
 # TOR support
