@@ -32,12 +32,16 @@ return [
         $cacheType = $config->get('cache');
 
         if ($cacheType === 'redis') {
-            $cache = new PredisCache(new PredisClient([
-                'scheme' => 'tcp',
-                'host'   => $config->get('redis_host'),
-                'port'   => $config->get('redis_port'),
-                'prefix' => $config->get('redis_prefix')
-            ]));
+            $cache = new PredisCache(new PredisClient(
+                [
+                    'scheme' => 'tcp',
+                    'host'   => $config->get('redis_host'),
+                    'port'   => $config->get('redis_port'),
+                ],
+                [
+                    'prefix' => $config->get('redis_prefix')
+                ]
+            ));
 
             return $cache;
         }
