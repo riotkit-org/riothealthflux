@@ -18,10 +18,16 @@ class HistorySQLiteRepository implements HistoryRepository
      */
     private $canExposeUrls;
 
-    public function __construct(string $path, bool $canExposeUrls)
+    /**
+     * @var bool
+     */
+    private $onlyHourlyData;
+
+    public function __construct(string $path, bool $canExposeUrls, bool $onlyHourlyData = false)
     {
-        $this->conn          = new \PDO('sqlite:' . $path);
-        $this->canExposeUrls = $canExposeUrls;
+        $this->conn           = new \PDO('sqlite:' . $path);
+        $this->canExposeUrls  = $canExposeUrls;
+        $this->onlyHourlyData = $onlyHourlyData;
     }
 
     public function persist(Node $node): void
@@ -136,7 +142,7 @@ class HistorySQLiteRepository implements HistoryRepository
         $grouped = [];
 
         foreach ($nodes as $node) {
-            $grouped[$node->getCheckId()][$node->getTime()->getTimestamp()] = $node;
+            $grouped[$node->getCheckId()][$node->getTime()->format($this->getGroupIdent())] = $node;
         }
 
         return array_map(
@@ -145,5 +151,14 @@ class HistorySQLiteRepository implements HistoryRepository
             },
             $grouped
         );
+    }
+
+    private function getGroupIdent(): string
+    {
+        if ($this->onlyHourlyData) {
+            return 'Y-m-d_H';
+        }
+
+        return 'Y-m-d_H__i';
     }
 }
