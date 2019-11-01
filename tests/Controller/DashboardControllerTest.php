@@ -2,6 +2,8 @@
 
 namespace Tests\Riotkit\UptimeAdminBoard\Controller;
 
+use Riotkit\UptimeAdminBoard\Repository\NodeRepository;
+use Riotkit\UptimeAdminBoard\Repository\StatsRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Tests\TestCase;
 use Twig\Environment;
@@ -27,18 +29,24 @@ class DashboardControllerTest extends TestCase
     {
         $kernel = $this->createKernel();
 
-        $handler = new ShowServicesAvailabilityAction(
-            new DummyProvider([
+        $nodeRepository = $this->createMock(NodeRepository::class);
+        $nodeRepository->method('findAllGroupedNodes')->willReturn(
+            [[
                 new Node('iwa-ait.org',    'Dummy', Node::STATUS_UP, 'http://iwa-ait.org'),
                 new Node('zsp.net.pl',     'Dummy', Node::STATUS_UP, 'http://zsp.net.pl'),
                 new Node('solfed.org.uk',  'Dummy', Node::STATUS_UP, 'http://www.solfed.org.uk/'),
                 new Node('cnt.es',         'Dummy', Node::STATUS_UP, 'http://www.cnt.es/'),
                 new Node('priamaakcia.sk', 'Dummy', Node::STATUS_UP, 'http://www.priamaakcia.sk/')
-            ]),
-            $kernel->getContainer()->get(Config::class)
+            ]]
         );
 
-        $controller = new DashboardController($handler, $kernel->getContainer()->get(Environment::class));
+        $handler = new ShowServicesAvailabilityAction(
+            $kernel->getContainer()->get(Config::class),
+            $nodeRepository,
+            $this->createMock(StatsRepository::class)
+        );
+
+        $controller = new DashboardController($handler, $kernel->getContainer()->get(Environment::class), 'dashboard.html.twig');
         $response = $controller->handle(new Request());
 
         $this->assertSame(200, $response->getStatusCode());
