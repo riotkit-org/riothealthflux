@@ -11,6 +11,8 @@ Created for the Anarchist movement.
 Special thanks:
 - Cory Kennedy-Darby (we forked his `ckdarby/php-uptimerobot` library on MIT license)
 
+![](./screenshot.png)
+
 Running
 =======
 
