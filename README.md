@@ -45,7 +45,7 @@ Below is an example configuration for docker-compose v2.x
 version: "2.3"
 services:
     app_dashboard:
-        image: quay.io/riotkit/uptime-admin-board:v2.0.3
+        image: quay.io/riotkit/uptime-admin-board:v2.1.0
         environment:
             - UAB_PROVIDERS=UptimeRobot://xyz
             - UAB_TITLE=RiotKit Collective monitoring
