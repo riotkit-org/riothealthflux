@@ -37,7 +37,7 @@ class NodeHistoryCollection extends ArrayCollection
      *
      * @return null|int Last check, that was failing
      */
-    public function wasRecentlyFixed(int $maxChecks = 50): ?int
+    public function wasRecentlyFixed(int $maxChecks = 100): ?int
     {
         $last = $this->last();
 
