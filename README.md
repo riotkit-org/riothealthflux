@@ -31,6 +31,9 @@ cd src_frontend && yarn install && cd ..
 
 # updating
 ./vendor/bin/phinx migrate
+
+# generating statistics
+php ./bin/console background-process
 ```
 
 Running with docker-compose
