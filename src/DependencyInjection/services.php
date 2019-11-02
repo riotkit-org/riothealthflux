@@ -88,8 +88,7 @@ return [
     HistorySQLiteRepository::class => static function (Config $config) {
         return new HistorySQLiteRepository(
             $config->get('db_path'),
-            $config->get('expose_url'),
-            $config->get('only_hourly_data')
+            $config->get('expose_url')
         );
     },
 

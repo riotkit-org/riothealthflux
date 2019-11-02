@@ -67,30 +67,24 @@ class HistoriesCollection extends ArrayCollection
             $allJoinedNodes = \array_merge(...\array_values($allJoinedNodes));
         }
 
-        // sort ascending, so the next step will leave in $indexedByNodeAndHour only last node
-        usort($allJoinedNodes, static function (Node $a, Node $b) {
-            return $a->getTime()->getTimestamp() <=> $b->getTime()->getTimestamp();
-        });
-
         $indexed = [];
 
         // initially index
         foreach ($allJoinedNodes as $node) {
-            $indexed[$node->getTime()->format('Y-m-d_H')][$node->getStatus()][$node->getCheckId()][$node->getTime()->getTimestamp()] = $node;
-        }
+            $dateTime = $node->getTime()->format('Y-m-d_H');
+            $status   = $node->getStatus();
+            $checkId  = $node->getCheckId();
 
-        // leave only last check in each hour
-        foreach ($indexed as &$time) {
-            foreach ($time as &$status) {
-                foreach ($status as &$checks) {
-                    krsort($checks);
-                    $checks = \array_values($checks)[0];
-                }
-                unset($checks);
+            /**
+             * @var Node $previousNode
+             */
+            $previousNode = isset($indexed[$dateTime][$status][$checkId]) ? $indexed[$dateTime][$status][$checkId] : null;
+
+            if (!$previousNode
+                || ($previousNode && $previousNode->getTime()->getTimestamp() < $node->getTime()->getTimestamp())) {
+                $indexed[$dateTime][$status][$checkId] = $node;
             }
-            unset($status);
         }
-        unset($time);
 
         return $indexed;
     }

@@ -139,7 +139,6 @@ export UAB_PROXY="http://someproxy:9080" # optional, a HTTP proxy to use, if it'
 #
 # Other
 #
-export UAB_ONLY_HOURLY_DATA=0   # do not process data per-minute, only per-hour. Could be a performance improvement
 export UAB_HISTORY_MAX_DAYS=5   # max days to keep in the history
 export UAB_DB_PATH=./var/db/database.sqlite3
 ```
