@@ -27,13 +27,14 @@ class StatsProcessingService
     public function warmUp(array $groupedCurrentNodes): void
     {
         $all = $this->historyRepository->findAllGrouped();
+        $countByStatus = $this->historyRepository->findCurrentCountByStatus();
 
         $stats = [
             'mostUnstableInCurrent24Hours'  => $all->findMostUnstableInLast24Hours(15),
             'topFailing'                    => $all->findMostlyFailingNodes(15),
             'recentlyFixed'                 => $all->findRecentlyFixed(15),
-            'failingChecks'                 => $this->historyRepository->findFailingCount(),
-            'succeedingChecks'              => $this->historyRepository->findSuccessCount(),
+            'failingChecks'                 => $countByStatus['failing'],
+            'succeedingChecks'              => $countByStatus['success'],
             'countByHour'                   => $all->findCountPerHour(),
             'nodesOrderedByStatus'          => $this->sortByStatus($groupedCurrentNodes)
         ];

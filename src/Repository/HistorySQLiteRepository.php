@@ -65,14 +65,30 @@ class HistorySQLiteRepository implements HistoryRepository
         return (int) $result->fetchColumn();
     }
 
-    public function findSuccessCount(): int
+    public function findCurrentCountByStatus(): array
     {
         $result = $this->q('
-            SELECT COUNT(id) FROM nodes_history 
-            WHERE is_current = true AND status = true;
+            SELECT COUNT(id), status FROM nodes_history 
+            WHERE is_current = true
+            GROUP BY status;
         ');
 
-        return (int) $result->fetchColumn();
+        $byStatus = [
+            'success' => 0,
+            'failing' => 0
+        ];
+        $data = $result->fetchAll(\PDO::FETCH_ASSOC);
+
+        foreach ($data as $row) {
+            if ($row['status'] == "1") {
+                $byStatus['success'] = $row['COUNT(id)'];
+                continue;
+            }
+
+            $byStatus['failing'] = $row['COUNT(id)'];
+        }
+
+        return $byStatus;
     }
 
     public function removeOlderThanDays(int $maxDays): void
@@ -133,17 +149,18 @@ class HistorySQLiteRepository implements HistoryRepository
      */
     private function group(array $nodes): array
     {
-        $grouped = [];
+        $byNodeAndTime = [];
 
         foreach ($nodes as $node) {
-            $grouped[$node->getCheckId()][$node->getTime()->getTimestamp()] = $node;
+            $byNodeAndTime[$node->getCheckId()][$node->getTime()->getTimestamp()] = $node;
         }
 
-        return array_map(
-            function (array $group) {
-                return new NodeHistoryCollection($group);
-            },
-            $grouped
-        );
+        $groups = [];
+
+        foreach ($byNodeAndTime as $index => $group) {
+            $groups[$index] = new NodeHistoryCollection($group);
+        }
+
+        return $groups;
     }
 }

@@ -116,7 +116,10 @@ class HistoriesCollection extends ArrayCollection
             )
             ->map(
                 function (NodeHistoryCollection $collection) use ($getter) {
-                    return \array_merge($collection->getNode()->jsonSerialize(), [$getter => $collection->$getter()]);
+                    $serialized = $collection->getNode()->jsonSerialize();
+                    $serialized[$getter] = $collection->$getter();
+
+                    return $serialized;
                 }
             )
             ->toArray();
@@ -134,15 +137,17 @@ class HistoriesCollection extends ArrayCollection
      */
     private function getTopNodesByScore(string $field, string $getter, int $maxCount, bool $reverse): array
     {
-        $items = \array_map(
-            static function (NodeHistoryCollection $collection) use ($field, $getter) {
-                return [
-                    'node'  => $collection->getNode(),
-                    $field => $collection->$getter()
-                ];
-            },
-            $this->toArray()
-        );
+        $items = [];
+
+        foreach ($this->toArray() as $key => $collection) {
+            /**
+             * @var NodeHistoryCollection $collection
+             */
+            $items[$key] = [
+                'node'  => $collection->getNode(),
+                $field => $collection->$getter()
+            ];
+        }
 
         \usort($items, function (array $a, array $b) use ($field) {
             return $a[$field] <=> $b[$field];

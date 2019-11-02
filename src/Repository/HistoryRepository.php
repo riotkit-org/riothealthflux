@@ -12,9 +12,7 @@ interface HistoryRepository
 
     public function removeOlderThanDays(int $maxDays): void;
 
-    public function findSuccessCount(): int;
-
-    public function findFailingCount(): int;
+    public function findCurrentCountByStatus(): array;
 
     /**
      * @return HistoriesCollection
