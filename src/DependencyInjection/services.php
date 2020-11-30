@@ -8,8 +8,9 @@ use Riotkit\UptimeAdminBoard\Component\Config;
 use Riotkit\UptimeAdminBoard\Factory\UrlFactory;
 use Riotkit\UptimeAdminBoard\Persistence\InfluxDBPersistence;
 use Riotkit\UptimeAdminBoard\Persistence\PersistenceInterface;
+use Riotkit\UptimeAdminBoard\Provider\InfracheckProvider;
 use Riotkit\UptimeAdminBoard\Provider\MultipleProvider;
-use Riotkit\UptimeAdminBoard\Provider\ServerUptimeProvider;
+use Riotkit\UptimeAdminBoard\Provider\ServerUptimeProviderInterface;
 use Riotkit\UptimeAdminBoard\Provider\UptimeRobotProvider;
 
 return [
@@ -51,13 +52,16 @@ return [
     //
 
     // STARTS: Provider chain
-    ServerUptimeProvider::class => static function (Container $container) {
+    ServerUptimeProviderInterface::class => static function (Container $container) {
         return $container->get(MultipleProvider::class);
     },
 
     MultipleProvider::class => static function (Container $container) {
         return new MultipleProvider(
-            [$container->get(UptimeRobotProvider::class)],
+            [
+                $container->get(InfracheckProvider::class),
+                $container->get(UptimeRobotProvider::class),
+            ],
             $container->get(LoggerInterface::class)
         );
     },

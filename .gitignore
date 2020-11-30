@@ -9,3 +9,8 @@
 /yarn.lock
 /supervisord.*
 *.sqlite3
+.rkd/logs
+*.pyc
+*__pycache__*
+/.venv
+.venv-setup.log

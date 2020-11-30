@@ -6,10 +6,10 @@ use Riotkit\UptimeAdminBoard\Kernel;
 
 class TestCase extends \PHPUnit\Framework\TestCase
 {
-    private static $backupEnv;
-    private static $backupServer;
+    private static array $backupEnv;
+    private static array $backupServer;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         self::$backupEnv    = $_ENV;
         self::$backupServer = $_SERVER;
@@ -17,7 +17,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
         parent::setUpBeforeClass();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $_ENV    = self::$backupEnv;
         $_SERVER = self::$backupServer;

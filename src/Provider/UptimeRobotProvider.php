@@ -8,7 +8,7 @@ use Riotkit\UptimeAdminBoard\Entity\Node;
 /**
  * @codeCoverageIgnore
  */
-class UptimeRobotProvider implements ServerUptimeProvider
+class UptimeRobotProvider implements ServerUptimeProviderInterface
 {
     private const CHECK_TYPE = 'UptimeRobot';
 
@@ -30,11 +30,11 @@ class UptimeRobotProvider implements ServerUptimeProvider
 
         foreach ($response['monitors']['monitor'] as $monitor) {
             $monitors[] = new Node(
-                $monitor['friendlyname'],
-                self::CHECK_TYPE,
-                (int) $monitor['status'] === 2 ? Node::STATUS_UP : Node::STATUS_DOWN,
-                $monitor['url'] ?? '',
-                null
+                name: $monitor['friendlyname'],
+                checkedBy: self::CHECK_TYPE,
+                status: (int) $monitor['status'] === 2 ? Node::STATUS_UP : Node::STATUS_DOWN,
+                url: $monitor['url'] ?? '',
+                actionTime: date('Y-m-d H:i:s')
             );
         }
 

@@ -5,47 +5,17 @@ namespace Riotkit\UptimeAdminBoard\Entity;
 /**
  * Represents a server node that is UP or DOWN
  */
-class Node implements \JsonSerializable
+class Node implements \JsonSerializable, \Stringable
 {
     public const STATUS_UNKNOWN = null;
     public const STATUS_UP      = true;
     public const STATUS_DOWN    = false;
 
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var string
-     */
-    private $url;
-
-    /**
-     * @var null|bool
-     */
-    private $status;
-
-    /**
-     * @var string
-     */
-    private $checkedBy;
-
-    /**
-     * @var string
-     */
-    private $actionTime;
-
     public function __construct(
-        string $name, string $checkedBy, ?bool $status = null,
-        string $url = '', string $time = null)
-    {
-        $this->name       = $name;
-        $this->status     = $status;
-        $this->url        = $url;
-        $this->checkedBy  = $checkedBy;
-        $this->actionTime = $time;
-    }
+        private string $name, private string $checkedBy, private ?bool $status = null,
+        private string $url = '', private ?string $actionTime = null
+    ) { }
+
 
     public function getName(): string
     {
@@ -65,11 +35,6 @@ class Node implements \JsonSerializable
     public function isUp(): bool
     {
         return $this->status === self::STATUS_UP;
-    }
-
-    public function isDown(): bool
-    {
-        return $this->status === self::STATUS_DOWN;
     }
 
     public function getCheckedBy(): string
@@ -103,5 +68,10 @@ class Node implements \JsonSerializable
             'id'     => $this->getCheckId(),
             'status' => $this->getStatus()
         ];
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName();
     }
 }

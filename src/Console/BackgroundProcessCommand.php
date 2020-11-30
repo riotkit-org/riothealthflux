@@ -4,7 +4,7 @@ namespace Riotkit\UptimeAdminBoard\Console;
 
 use Riotkit\UptimeAdminBoard\Factory\UrlFactory;
 use Riotkit\UptimeAdminBoard\Persistence\PersistenceInterface;
-use Riotkit\UptimeAdminBoard\Provider\ServerUptimeProvider;
+use Riotkit\UptimeAdminBoard\Provider\ServerUptimeProviderInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -18,9 +18,9 @@ class BackgroundProcessCommand extends ConsoleCommand
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         /**
-         * @var ServerUptimeProvider $provider
+         * @var ServerUptimeProviderInterface $provider
          */
-        $provider = $this->container->get(ServerUptimeProvider::class);
+        $provider = $this->container->get(ServerUptimeProviderInterface::class);
 
         /**
          * @var PersistenceInterface $persistence
@@ -36,6 +36,7 @@ class BackgroundProcessCommand extends ConsoleCommand
             $output->writeln('Fetching statuses for url=' . $url . '...');
 
             foreach ($provider->handle($url) as $node) {
+                $output->writeln('Writing status for ' . $node);
                 $persistence->persist($node);
             }
         }

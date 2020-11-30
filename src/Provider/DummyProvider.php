@@ -7,20 +7,13 @@ use Riotkit\UptimeAdminBoard\Entity\Node;
 /**
  * @codeCoverageIgnore
  */
-class DummyProvider implements ServerUptimeProvider
+class DummyProvider implements ServerUptimeProviderInterface
 {
     /**
-     * @var Node[] $results
+     * @param Node[] $results
+     * @param bool $canHandle
      */
-    private array $results;
-
-    private bool $canHandle;
-
-    public function __construct(array $results, bool $canHandle = true)
-    {
-        $this->results = $results;
-        $this->canHandle = $canHandle;
-    }
+    public function __construct(private array $results, private bool $canHandle = true) { }
 
     /**
      * @inheritdoc

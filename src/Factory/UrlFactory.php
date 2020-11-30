@@ -4,12 +4,7 @@ namespace Riotkit\UptimeAdminBoard\Factory;
 
 class UrlFactory
 {
-    private array $urls;
-
-    public function __construct(array $urls)
-    {
-        $this->urls = $urls;
-    }
+    public function __construct(private array $urls) { }
 
     public function getUrls(): array
     {

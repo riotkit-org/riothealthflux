@@ -4,7 +4,7 @@ namespace Riotkit\UptimeAdminBoard\Provider;
 
 use Riotkit\UptimeAdminBoard\Entity\Node;
 
-interface ServerUptimeProvider
+interface ServerUptimeProviderInterface
 {
     /**
      * Tells if is able to handle the URL

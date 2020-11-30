@@ -4,20 +4,13 @@ namespace Riotkit\UptimeAdminBoard\Provider;
 
 use Psr\Log\LoggerInterface;
 
-class MultipleProvider implements ServerUptimeProvider
+class MultipleProvider implements ServerUptimeProviderInterface
 {
     /**
-     * @var ServerUptimeProvider[] $providers
+     * @param ServerUptimeProviderInterface[] $providers
+     * @param LoggerInterface $logger
      */
-    private array $providers;
-
-    private LoggerInterface $logger;
-
-    public function __construct(array $providers, LoggerInterface $logger)
-    {
-        $this->providers = $providers;
-        $this->logger    = $logger;
-    }
+    public function __construct(private array $providers, private LoggerInterface $logger) { }
 
     /**
      * @inheritdoc

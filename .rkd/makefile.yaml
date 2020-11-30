@@ -1,0 +1,37 @@
+version: org.riotkit.rkd/yaml/v1
+imports: []
+
+environment:
+    PHP_BIN: "./php.sh"
+    INFLUXDB_ORG: "-"
+    INFLUXDB_BUCKET: "hulajpole/autogen"
+    INFLUXDB_TOKEN: "bakunin:bakunin"
+
+default_arguments: &default_arguments
+    "--providers":
+        help: "List of providers"
+
+tasks:
+    :test-containers:setup:
+        description: Start containers required for running tests
+        steps:
+            - cd .infrastructure && docker-compose -p riothealthflux up -d
+
+    :test-containers:clear:
+        description: Clear containers used in tests
+        steps:
+            - cd .infrastructure && docker-compose -p riothealthflux rm -v -f -s
+
+    :run:test-collection:
+        description: Run a test collection on test containers
+        arguments:
+            <<: *default_arguments
+        steps: |
+            set -x
+            RIOT_PROVIDERS=${ARG_PROVIDERS} ${PHP_BIN} ./bin/console background-process -vvv
+
+    :run:tests:
+        description: Run automated tests
+        steps: |
+            set -x
+            ${PHP_BIN} ./vendor/bin/phpunit
