@@ -2,43 +2,37 @@
 
 namespace Riotkit\UptimeAdminBoard\Persistence;
 
-use InfluxDB2\Client;
-use InfluxDB2\Model\WritePrecision;
-use Riotkit\UptimeAdminBoard\Entity\Node;
+use InfluxDB\Client;
+use InfluxDB\Database;
+use InfluxDB\Point;
+use Riotkit\UptimeAdminBoard\DTO\Node;
 
 class InfluxDBPersistence implements PersistenceInterface
 {
-    private Client $client;
+    private Database $client;
 
-    public function __construct(string $url, string $token, string $bucket, string $org)
+    public function __construct(string $url)
     {
-        $this->client = new Client([
-            'url'    => $url,
-            'token'  => $token,
-            'bucket' => $bucket,
-            'org'    => $org,
-            'precision' => WritePrecision::NS
-        ]);
+        $this->client = Client::fromDSN($url);
     }
 
     public function persist(Node $node): void
     {
-        $writeClient = $this->client->createWriteApi();
-        $writeClient->write([
-           [
-               'name' => 'riothealthflux',
-               'tags' => [
-                   'checked_by' => $node->getCheckedBy(),
-                   'name'       => $node->getName(),
-                   'url'        => $node->getUrl()
-               ],
-               'fields' => [
-                   'up' => $node->isUp(),
-                   'id' => $node->getCheckId()
-               ],
-               'time' => time()
-           ]
+        $this->client->writePoints([
+            new Point(
+                'riothealthflux',
+                $node->isUp(),
+                [
+                    'checked_by' => $node->getCheckedBy(),
+                    'name'       => $node->getName(),
+                    'url'        => $node->getUrl(),
+                    'ident'      => $node->getName() . '_'. $node->getUrl()
+                ],
+                [
+                    'up' => $node->isUp(),
+                    'id' => $node->getCheckId()
+                ]
+            )
         ]);
-        $writeClient->close();
     }
 }

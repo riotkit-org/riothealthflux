@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Riotkit\UptimeAdminBoard\Entity;
+namespace Riotkit\UptimeAdminBoard\DTO;
 
 /**
  * Represents a server node that is UP or DOWN
@@ -13,20 +13,35 @@ class Node implements \JsonSerializable, \Stringable
 
     public function __construct(
         private string $name, private string $checkedBy, private ?bool $status = null,
-        private string $url = '', private ?string $actionTime = null
+        private string $url = ''
     ) { }
 
 
+    /**
+     * @codeCoverageIgnore
+     *
+     * @return string
+     */
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * @codeCoverageIgnore
+     *
+     * @return string
+     */
     public function getUrl(): string
     {
         return $this->url;
     }
 
+    /**
+     * @codeCoverageIgnore
+     *
+     * @return bool|null
+     */
     public function getStatus(): ?bool
     {
         return $this->status;
@@ -37,6 +52,11 @@ class Node implements \JsonSerializable, \Stringable
         return $this->status === self::STATUS_UP;
     }
 
+    /**
+     * @codeCoverageIgnore
+     *
+     * @return string
+     */
     public function getCheckedBy(): string
     {
         return $this->checkedBy;
@@ -48,19 +68,10 @@ class Node implements \JsonSerializable, \Stringable
     }
 
     /**
-     * @return \DateTimeImmutable
+     * @codeCoverageIgnore
      *
-     * @throws \Exception
+     * @return array
      */
-    public function getTime(): \DateTimeImmutable
-    {
-        if (!$this->actionTime) {
-            return new \DateTimeImmutable();
-        }
-
-        return new \DateTimeImmutable($this->actionTime);
-    }
-
     public function jsonSerialize(): array
     {
         return [
@@ -70,6 +81,11 @@ class Node implements \JsonSerializable, \Stringable
         ];
     }
 
+    /**
+     * @codeCoverageIgnore
+     *
+     * @return string
+     */
     public function __toString(): string
     {
         return $this->getName();

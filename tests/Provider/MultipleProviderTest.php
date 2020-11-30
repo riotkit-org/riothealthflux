@@ -6,7 +6,7 @@ use Psr\Log\LoggerInterface;
 use Tests\TestCase;
 use Riotkit\UptimeAdminBoard\Provider\DummyProvider;
 use Riotkit\UptimeAdminBoard\Provider\MultipleProvider;
-use Riotkit\UptimeAdminBoard\Entity\Node;
+use Riotkit\UptimeAdminBoard\DTO\Node;
 
 /**
  * @see MultipleProvider

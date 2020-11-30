@@ -3,9 +3,7 @@ imports: []
 
 environment:
     PHP_BIN: "./php.sh"
-    INFLUXDB_ORG: "-"
-    INFLUXDB_BUCKET: "hulajpole/autogen"
-    INFLUXDB_TOKEN: "bakunin:bakunin"
+    INFLUXDB_URL: "http+influxdb://bakunin:bakunin@localhost:8086/hulajpole"
 
 default_arguments: &default_arguments
     "--providers":

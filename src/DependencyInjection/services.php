@@ -39,10 +39,7 @@ return [
 
     InfluxDBPersistence::class => static function (Config $config) {
         return new InfluxDBPersistence(
-            $config->get('influxdb_url'),
-            $config->get('influxdb_token'),
-            $config->get('influxdb_bucket'),
-            $config->get('influxdb_org')
+            $config->get('influxdb_url')
         );
     },
 

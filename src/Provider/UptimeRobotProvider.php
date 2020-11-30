@@ -3,7 +3,7 @@
 namespace Riotkit\UptimeAdminBoard\Provider;
 
 use Riotkit\UptimeAdminBoard\Service\UptimeRobotApi;
-use Riotkit\UptimeAdminBoard\Entity\Node;
+use Riotkit\UptimeAdminBoard\DTO\Node;
 
 /**
  * @codeCoverageIgnore
@@ -33,8 +33,7 @@ class UptimeRobotProvider implements ServerUptimeProviderInterface
                 name: $monitor['friendlyname'],
                 checkedBy: self::CHECK_TYPE,
                 status: (int) $monitor['status'] === 2 ? Node::STATUS_UP : Node::STATUS_DOWN,
-                url: $monitor['url'] ?? '',
-                actionTime: date('Y-m-d H:i:s')
+                url: $monitor['url'] ?? ''
             );
         }
 

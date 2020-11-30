@@ -2,7 +2,7 @@
 
 namespace Riotkit\UptimeAdminBoard\Persistence;
 
-use Riotkit\UptimeAdminBoard\Entity\Node;
+use Riotkit\UptimeAdminBoard\DTO\Node;
 
 interface PersistenceInterface
 {

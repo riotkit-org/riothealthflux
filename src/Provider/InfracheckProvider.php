@@ -3,11 +3,11 @@
 namespace Riotkit\UptimeAdminBoard\Provider;
 
 use GuzzleHttp\Client;
-use Riotkit\UptimeAdminBoard\Entity\Node;
+use Riotkit\UptimeAdminBoard\DTO\Node;
 
 class InfracheckProvider implements ServerUptimeProviderInterface
 {
-    private const PREFIX = 'Infracheck://';
+    private const PREFIX        = 'Infracheck://';
     private const PROVIDER_NAME = 'Infracheck';
 
     /**
@@ -35,8 +35,7 @@ class InfracheckProvider implements ServerUptimeProviderInterface
                 name: $name,
                 checkedBy: static::PROVIDER_NAME,
                 status: $details['status'],
-                url: $url,
-                actionTime: $details['checked_at']
+                url: $url
             );
         }
 

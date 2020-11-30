@@ -43,8 +43,5 @@ if (!function_exists('get_env_array')) {
 return array_map('unescape_env_value', [
     'providers'           => get_env_array('RIOT_PROVIDERS', []),
     'log_path'            => get_env_string('RIOT_LOG_PATH', './uptime-admin-board.log'),
-    'influxdb_url'        => get_env_string('INFLUXDB_URL', 'http://localhost:8086'),
-    'influxdb_token'      => get_env_string('INFLUXDB_TOKEN', ''),
-    'influxdb_bucket'     => get_env_string('INFLUXDB_BUCKET', ''),
-    'influxdb_org'        => get_env_string('INFLUXDB_ORG', '')
+    'influxdb_url'        => get_env_string('INFLUXDB_URL', '')
 ]);

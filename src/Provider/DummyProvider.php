@@ -2,7 +2,7 @@
 
 namespace Riotkit\UptimeAdminBoard\Provider;
 
-use Riotkit\UptimeAdminBoard\Entity\Node;
+use Riotkit\UptimeAdminBoard\DTO\Node;
 
 /**
  * @codeCoverageIgnore
