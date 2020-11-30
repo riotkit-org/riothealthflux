@@ -1,4 +1,4 @@
-name: "Backup Repository Server testing workflow"
+name: "RiotKit HealthFlux pipeline - test & release"
 on:
     push:
     pull_request:
