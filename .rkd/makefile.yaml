@@ -33,3 +33,24 @@ tasks:
         steps: |
             set -x
             ${PHP_BIN} ./vendor/bin/phpunit
+
+    :test:unit:html:
+        description: Create report in HTML format
+        steps: vjunit -f var/tests/unit.junit.xml -o var/tests/unit.junit.html
+
+    :release:dist-zip:
+        description: Creates a distribution package
+        steps:
+            - composer install
+            - rm -f ./var/dist.tar.gz
+            - |
+                tar -zcvf ./var/dist.tar.gz  \
+                    --exclude=.env \
+                    --exclude=.venv \
+                    --exclude=var \
+                    --exclude=.phpunit.result.cache \
+                    --exclude=phpunit* \
+                    --exclude=tests \
+                    --exclude=.infrastructure \
+                    --exclude=.rkd \
+                    *
