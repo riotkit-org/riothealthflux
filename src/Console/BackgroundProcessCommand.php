@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Riotkit\UptimeAdminBoard\Console;
+namespace Riotkit\HealthFlux\Console;
 
-use Riotkit\UptimeAdminBoard\Factory\UrlFactory;
-use Riotkit\UptimeAdminBoard\Persistence\PersistenceInterface;
-use Riotkit\UptimeAdminBoard\Provider\ServerUptimeProviderInterface;
+use Riotkit\HealthFlux\Factory\UrlFactory;
+use Riotkit\HealthFlux\Persistence\PersistenceInterface;
+use Riotkit\HealthFlux\Provider\ServerUptimeProviderInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

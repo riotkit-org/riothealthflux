@@ -2,7 +2,7 @@
 
 namespace Tests\Riotkit\UptimeAdminBoard\Provider;
 
-use Riotkit\UptimeAdminBoard\Provider\InfracheckProvider;
+use Riotkit\HealthFlux\Provider\InfracheckProvider;
 use Tests\IntegrationalTestCase;
 
 class InfracheckProviderTest extends IntegrationalTestCase

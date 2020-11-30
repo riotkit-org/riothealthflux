@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Riotkit\UptimeAdminBoard\DTO;
+namespace Riotkit\HealthFlux\DTO;
 
 /**
  * Represents a server node that is UP or DOWN

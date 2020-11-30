@@ -4,14 +4,14 @@ use DI\Container;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
-use Riotkit\UptimeAdminBoard\Component\Config;
-use Riotkit\UptimeAdminBoard\Factory\UrlFactory;
-use Riotkit\UptimeAdminBoard\Persistence\InfluxDBPersistence;
-use Riotkit\UptimeAdminBoard\Persistence\PersistenceInterface;
-use Riotkit\UptimeAdminBoard\Provider\InfracheckProvider;
-use Riotkit\UptimeAdminBoard\Provider\MultipleProvider;
-use Riotkit\UptimeAdminBoard\Provider\ServerUptimeProviderInterface;
-use Riotkit\UptimeAdminBoard\Provider\UptimeRobotProvider;
+use Riotkit\HealthFlux\Component\Config;
+use Riotkit\HealthFlux\Factory\UrlFactory;
+use Riotkit\HealthFlux\Persistence\InfluxDBPersistence;
+use Riotkit\HealthFlux\Persistence\PersistenceInterface;
+use Riotkit\HealthFlux\Provider\InfracheckProvider;
+use Riotkit\HealthFlux\Provider\MultipleProvider;
+use Riotkit\HealthFlux\Provider\ServerUptimeProviderInterface;
+use Riotkit\HealthFlux\Provider\UptimeRobotProvider;
 
 return [
 

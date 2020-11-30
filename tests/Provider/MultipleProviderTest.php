@@ -4,9 +4,9 @@ namespace Tests\Riotkit\UptimeAdminBoard\Provider;
 
 use Psr\Log\LoggerInterface;
 use Tests\TestCase;
-use Riotkit\UptimeAdminBoard\Provider\DummyProvider;
-use Riotkit\UptimeAdminBoard\Provider\MultipleProvider;
-use Riotkit\UptimeAdminBoard\DTO\Node;
+use Riotkit\HealthFlux\Provider\DummyProvider;
+use Riotkit\HealthFlux\Provider\MultipleProvider;
+use Riotkit\HealthFlux\DTO\Node;
 
 /**
  * @see MultipleProvider

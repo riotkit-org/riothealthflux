@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Riotkit\UptimeAdminBoard\Persistence;
+namespace Riotkit\HealthFlux\Persistence;
 
-use Riotkit\UptimeAdminBoard\DTO\Node;
+use Riotkit\HealthFlux\DTO\Node;
 
 interface PersistenceInterface
 {

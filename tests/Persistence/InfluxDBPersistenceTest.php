@@ -3,8 +3,8 @@
 namespace Tests\Riotkit\UptimeAdminBoard\Persistence;
 
 use InfluxDB\Client;
-use Riotkit\UptimeAdminBoard\DTO\Node;
-use Riotkit\UptimeAdminBoard\Persistence\InfluxDBPersistence;
+use Riotkit\HealthFlux\DTO\Node;
+use Riotkit\HealthFlux\Persistence\InfluxDBPersistence;
 use Tests\IntegrationalTestCase;
 
 class InfluxDBPersistenceTest extends IntegrationalTestCase

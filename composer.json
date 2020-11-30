@@ -17,7 +17,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Riotkit\\UptimeAdminBoard\\": "src/"
+            "Riotkit\\HealthFlux\\": "src/"
         }
     },
     "autoload-dev": {

@@ -2,7 +2,7 @@
 
 namespace Tests\Riotkit\UptimeAdminBoard\Component;
 
-use Riotkit\UptimeAdminBoard\DTO\Node;
+use Riotkit\HealthFlux\DTO\Node;
 use Tests\TestCase;
 
 /**

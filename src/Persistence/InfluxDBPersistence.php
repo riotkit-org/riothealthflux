@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Riotkit\UptimeAdminBoard\Persistence;
+namespace Riotkit\HealthFlux\Persistence;
 
 use InfluxDB\Client;
 use InfluxDB\Database;
 use InfluxDB\Point;
-use Riotkit\UptimeAdminBoard\DTO\Node;
+use Riotkit\HealthFlux\DTO\Node;
 
 class InfluxDBPersistence implements PersistenceInterface
 {

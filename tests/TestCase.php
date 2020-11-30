@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use Riotkit\UptimeAdminBoard\Kernel;
+use Riotkit\HealthFlux\Kernel;
 
 class TestCase extends \PHPUnit\Framework\TestCase
 {

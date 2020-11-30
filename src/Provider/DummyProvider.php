@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Riotkit\UptimeAdminBoard\Provider;
+namespace Riotkit\HealthFlux\Provider;
 
-use Riotkit\UptimeAdminBoard\DTO\Node;
+use Riotkit\HealthFlux\DTO\Node;
 
 /**
  * @codeCoverageIgnore

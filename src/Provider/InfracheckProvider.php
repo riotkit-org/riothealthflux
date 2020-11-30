@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Riotkit\UptimeAdminBoard\Provider;
+namespace Riotkit\HealthFlux\Provider;
 
 use GuzzleHttp\Client;
-use Riotkit\UptimeAdminBoard\DTO\Node;
+use Riotkit\HealthFlux\DTO\Node;
 
 class InfracheckProvider implements ServerUptimeProviderInterface
 {
