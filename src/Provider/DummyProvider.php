@@ -12,12 +12,9 @@ class DummyProvider implements ServerUptimeProvider
     /**
      * @var Node[] $results
      */
-    private $results;
+    private array $results;
 
-    /**
-     * @var bool $canHandle
-     */
-    private $canHandle;
+    private bool $canHandle;
 
     public function __construct(array $results, bool $canHandle = true)
     {
@@ -36,7 +33,7 @@ class DummyProvider implements ServerUptimeProvider
     /**
      * @inheritdoc
      */
-    public function handle(string $url, string $proxyAddress = '', string $proxyAuth = ''): array
+    public function handle(string $url): array
     {
         return $this->results;
     }

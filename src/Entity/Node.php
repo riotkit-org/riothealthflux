@@ -36,21 +36,15 @@ class Node implements \JsonSerializable
      */
     private $actionTime;
 
-    /**
-     * @var bool
-     */
-    private $canExposeUrl;
-
     public function __construct(
         string $name, string $checkedBy, ?bool $status = null,
-        string $url = '', string $time = null, bool $canExposeUrl = false)
+        string $url = '', string $time = null)
     {
         $this->name       = $name;
         $this->status     = $status;
         $this->url        = $url;
         $this->checkedBy  = $checkedBy;
         $this->actionTime = $time;
-        $this->canExposeUrl = $canExposeUrl;
     }
 
     public function getName(): string
@@ -107,8 +101,7 @@ class Node implements \JsonSerializable
         return [
             'name'   => $this->getName(),
             'id'     => $this->getCheckId(),
-            'status' => $this->getStatus(),
-            'url'    => $this->canExposeUrl ? $this->url : ''
+            'status' => $this->getStatus()
         ];
     }
 }

@@ -17,10 +17,8 @@ interface ServerUptimeProvider
 
     /**
      * @param string $url
-     * @param string $proxyAddress
-     * @param string $proxyAuth
      *
      * @return Node[]
      */
-    public function handle(string $url, string $proxyAddress = '', string $proxyAuth = ''): array;
+    public function handle(string $url): array;
 }

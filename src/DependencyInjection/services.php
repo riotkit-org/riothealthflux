@@ -1,25 +1,16 @@
 <?php declare(strict_types=1);
 
 use DI\Container;
-use Doctrine\Common\Cache\Cache;
-use Doctrine\Common\Cache\FilesystemCache;
-use Doctrine\Common\Cache\PredisCache;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
-use Predis\Client as PredisClient;
 use Psr\Log\LoggerInterface;
-use Riotkit\UptimeAdminBoard\ActionHandler\ShowServicesAvailabilityAction;
 use Riotkit\UptimeAdminBoard\Component\Config;
-use Riotkit\UptimeAdminBoard\Controller\DashboardController;
+use Riotkit\UptimeAdminBoard\Factory\UrlFactory;
+use Riotkit\UptimeAdminBoard\Persistence\InfluxDBPersistence;
+use Riotkit\UptimeAdminBoard\Persistence\PersistenceInterface;
 use Riotkit\UptimeAdminBoard\Provider\MultipleProvider;
 use Riotkit\UptimeAdminBoard\Provider\ServerUptimeProvider;
 use Riotkit\UptimeAdminBoard\Provider\UptimeRobotProvider;
-use Riotkit\UptimeAdminBoard\Provider\WithMetricsRecordedProvider;
-use Riotkit\UptimeAdminBoard\Provider\WithTorWrapperProvider;
-use Riotkit\UptimeAdminBoard\Repository\HistoryRepository;
-use Riotkit\UptimeAdminBoard\Repository\HistorySQLiteRepository;
-use Riotkit\UptimeAdminBoard\Service\TORProxyHandler;
-use Twig\Environment;
 
 return [
 
@@ -27,39 +18,8 @@ return [
     // Infrastructure
     //
     
-    Cache::class => static function (Container $container) {
-        $config    = $container->get(Config::class);
-        $cacheType = $config->get('cache');
-
-        if ($cacheType === 'redis') {
-            $cache = new PredisCache(new PredisClient(
-                [
-                    'scheme' => 'tcp',
-                    'host'   => $config->get('redis_host'),
-                    'port'   => $config->get('redis_port'),
-                ],
-                [
-                    'prefix' => $config->get('redis_prefix')
-                ]
-            ));
-
-            return $cache;
-        }
-
-        return new FilesystemCache(__DIR__ . '/../../var/cache/');
-    },
-
-    Twig\Environment::class => static function () {
-        return new Twig\Environment(
-            new Twig\Loader\FilesystemLoader([
-                __DIR__ . '/../../templates/',
-                __DIR__ . '/../../public/'
-            ])
-        );
-    },
-
     LoggerInterface::class => static function (Config $config) {
-        $logger = new Logger('uptime-admin-board');
+        $logger = new Logger('riothealthflux');
 
         if (PHP_SAPI === 'cli') {
             $logger->pushHandler(new StreamHandler('php://stdout', Logger::INFO));
@@ -72,48 +32,27 @@ return [
         return $logger;
     },
 
+    PersistenceInterface::class => static function (Container $container) {
+        return $container->get(InfluxDBPersistence::class);
+    },
+
+    InfluxDBPersistence::class => static function (Config $config) {
+        return new InfluxDBPersistence(
+            $config->get('influxdb_url'),
+            $config->get('influxdb_token'),
+            $config->get('influxdb_bucket'),
+            $config->get('influxdb_org')
+        );
+    },
+
 
     //
     // Application
     //
 
-    DashboardController::class => static function (Container $container, Config $config) {
-        return new DashboardController(
-            $container->get(ShowServicesAvailabilityAction::class),
-            $container->get(Environment::class),
-            $config->get('dynamic_dashboard') ? 'index.html' : 'dashboard.html.twig'
-        );
-    },
-
-    HistorySQLiteRepository::class => static function (Config $config) {
-        return new HistorySQLiteRepository(
-            $config->get('db_path'),
-            $config->get('expose_url')
-        );
-    },
-
-    HistoryRepository::class => static function (Container $container) {
-        return $container->get(HistorySQLiteRepository::class);
-    },
-
     // STARTS: Provider chain
     ServerUptimeProvider::class => static function (Container $container) {
-        return $container->get(WithMetricsRecordedProvider::class);
-    },
-
-    WithTorWrapperProvider::class => static function (Container $container) {
-        return new WithTorWrapperProvider(
-            $container->get(MultipleProvider::class),
-            $container->get(TORProxyHandler::class)
-        );
-    },
-
-    WithMetricsRecordedProvider::class => static function (Container $container, Config $config) {
-        return new WithMetricsRecordedProvider(
-            $container->get(WithTorWrapperProvider::class),
-            $container->get(HistoryRepository::class),
-            $config->get('history_max_days')
-        );
+        return $container->get(MultipleProvider::class);
     },
 
     MultipleProvider::class => static function (Container $container) {
@@ -123,20 +62,14 @@ return [
         );
     },
 
-    UptimeRobotProvider::class => static function (Config $config) {
-        return new UptimeRobotProvider($config->get('expose_url'));
+    UptimeRobotProvider::class => static function () {
+        return new UptimeRobotProvider();
     },
 
     // ENDS: Provider chain
 
-    TORProxyHandler::class => static function (Container $container) {
-        $config = $container->get(Config::class);
-
-        return new TORProxyHandler(
-            $config->get('proxy_address', ''),
-            $config->get('tor_management_port', 9052),
-            $config->get('tor_password', '')
-        );
+    UrlFactory::class => static function (Config $config) {
+        return new UrlFactory($config->get('providers'));
     },
 
     Config::class => static function () {

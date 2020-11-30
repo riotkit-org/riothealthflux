@@ -9,12 +9,9 @@ class MultipleProvider implements ServerUptimeProvider
     /**
      * @var ServerUptimeProvider[] $providers
      */
-    private $providers;
+    private array $providers;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(array $providers, LoggerInterface $logger)
     {
@@ -39,12 +36,12 @@ class MultipleProvider implements ServerUptimeProvider
     /**
      * @inheritdoc
      */
-    public function handle(string $url, string $proxyAddress = '', string $proxyAuth = ''): array
+    public function handle(string $url): array
     {
         foreach ($this->providers as $provider) {
             try {
                 if ($provider->canHandle($url)) {
-                    return $provider->handle($url, $proxyAddress, $proxyAuth);
+                    return $provider->handle($url);
                 }
             } catch (\Exception $exception) {
                 $this->logger->critical(

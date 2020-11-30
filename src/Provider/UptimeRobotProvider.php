@@ -13,24 +13,12 @@ class UptimeRobotProvider implements ServerUptimeProvider
     private const CHECK_TYPE = 'UptimeRobot';
 
     /**
-     * @var bool bool
-     */
-    private $canExposeUrls;
-
-    public function __construct(bool $canExposeUrls)
-    {
-        $this->canExposeUrls = $canExposeUrls;
-    }
-
-    /**
      * @inheritdoc
      */
-    public function handle(string $url, string $proxyAddress = '', string $proxyAuth = ''): array
+    public function handle(string $url): array
     {
         $api = $this->createApiInstance(
             $this->unpackUrl($url)['apiKey'],
-            $proxyAddress,
-            $proxyAuth
         );
 
         $response = $api->request('/getMonitors');
@@ -46,8 +34,7 @@ class UptimeRobotProvider implements ServerUptimeProvider
                 self::CHECK_TYPE,
                 (int) $monitor['status'] === 2 ? Node::STATUS_UP : Node::STATUS_DOWN,
                 $monitor['url'] ?? '',
-                null,
-                $this->canExposeUrls
+                null
             );
         }
 
@@ -73,22 +60,16 @@ class UptimeRobotProvider implements ServerUptimeProvider
 
     /**
      * @param string $key
-     * @param string $proxyAddress
-     * @param string $proxyAuth
      *
      * @return UptimeRobotApi
      * @throws \Exception
      */
-    private function createApiInstance(string $key, string $proxyAddress = '', string $proxyAuth = ''): UptimeRobotApi
+    private function createApiInstance(string $key): UptimeRobotApi
     {
         return new UptimeRobotApi(
             [
                 'url'        => 'https://api.uptimerobot.com',
                 'apiKey'     => $key
-            ],
-            [
-                'proxy'      => $proxyAddress,
-                'proxy_auth' => $proxyAuth
             ]
         );
     }
