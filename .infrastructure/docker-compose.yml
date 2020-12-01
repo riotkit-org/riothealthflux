@@ -7,11 +7,11 @@ services:
             INFLUXDB_ADMIN_USER: bakunin
             INFLUXDB_ADMIN_PASSWORD: bakunin
         ports:
-            - 127.0.0.1:8086:8086
+            - 8086:8086
 
     infracheck:
         image: quay.io/riotkit/infracheck:v2.0-x86_64
         volumes:
             - ./container-files/infracheck:/data
         ports:
-            - 127.0.0.1:8000:8000
+            - 8000:8000
