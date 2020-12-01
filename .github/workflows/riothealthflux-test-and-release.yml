@@ -7,7 +7,7 @@ on:
             - primary
 
 jobs:
-    "test_each_new_commit":
+    test_each_new_commit:
         runs-on: ubuntu-20.04
         steps:
             - name: "Checkout"
@@ -44,3 +44,18 @@ jobs:
               with:
                   name: tests-results
                   path: var/tests
+
+    release_docker:
+        needs: [ test_each_new_commit ]
+        runs-on: ubuntu-20.04
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+              with:
+                  fetch-depth: 0
+
+            - name: "Install build dependencies"
+              run: "sudo pip install -r ./requirements.txt"
+
+            - name: "Build and publish docker"
+              run: "rkd :release:docker"

@@ -1,1 +1,10 @@
-*.sqlite3
+/.github
+/.venv
+/var
+/phpunit.xml
+/setup-venv.sh
+/requirements.txt
+/.phpunit.result.cache
+/.gitignore
+/.git
+/vendor
