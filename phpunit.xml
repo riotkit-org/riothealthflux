@@ -21,7 +21,7 @@
     </filter>
 
     <logging>
-        <log type="coverage-clover" target="var/tests/unit.coverage.xml"/>
+<!--        <log type="coverage-clover" target="var/tests/unit.coverage.xml"/>-->
         <log type="junit" target="var/tests/unit.junit.xml"/>
     </logging>
 </phpunit>
