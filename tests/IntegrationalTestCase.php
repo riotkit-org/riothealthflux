@@ -8,7 +8,7 @@ class IntegrationalTestCase extends TestCase
     {
         parent::setUp();
 
-        exec('rkd :test-containers:clear :test-containers:setup > /dev/null');
+        exec('rkd :test-containers:clear :test-containers:setup');
     }
 
     public function tearDown(): void
