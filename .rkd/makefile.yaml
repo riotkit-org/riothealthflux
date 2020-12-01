@@ -10,6 +10,11 @@ default_arguments: &default_arguments
         help: "List of providers"
 
 tasks:
+    :setup:
+        description: Setup locally application
+        steps:
+            - composer install
+
     :test-containers:setup:
         description: Start containers required for running tests
         steps:

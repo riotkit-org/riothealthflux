@@ -26,6 +26,9 @@ jobs:
               env:
                   update: true
 
+            - name: "Install application dependencies"
+              run: "rkd :setup"
+
             # —— Tests —————————————————————————————————————————————————————————
             - name: "Run tests"
               run: "PHP_BIN=php rkd :run:tests"
