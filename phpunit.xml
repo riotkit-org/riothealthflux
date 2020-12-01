@@ -6,6 +6,7 @@
          beStrictAboutCoversAnnotation="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTodoAnnotatedTests="true"
+         printerClass="mheap\GithubActionsReporter\Printer"
          verbose="true">
     <testsuites>
         <testsuite name="default">
