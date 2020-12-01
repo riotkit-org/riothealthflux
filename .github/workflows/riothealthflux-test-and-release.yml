@@ -29,6 +29,9 @@ jobs:
             - name: "Install application dependencies"
               run: "rkd :setup"
 
+            - name: "Prepare test containers"
+              run: "rkd :test-containers:setup"
+
             # —— Tests —————————————————————————————————————————————————————————
             - name: "Run tests"
               run: "PHP_BIN=php rkd :run:tests"
