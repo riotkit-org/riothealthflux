@@ -23,7 +23,7 @@ tasks:
     :test-containers:clear:
         description: Clear containers used in tests
         steps:
-            - cd .infrastructure && docker-compose -p riothealthflux rm -v -f -s
+            - cd .infrastructure && docker-compose -p riothealthflux rm -v -f -s || true
 
     :run:test-collection:
         description: Run a test collection on test containers
