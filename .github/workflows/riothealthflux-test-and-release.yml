@@ -36,7 +36,7 @@ jobs:
             - name: PHPUnit tests
               uses: php-actions/phpunit@v1
               with:
-                  memory_limit: 256M
+                  php_version: 8.0
 
 #            # —— Reports ———————————————————————————————————————————————————————
 #            - name: "Make HTML report from unit tests"
