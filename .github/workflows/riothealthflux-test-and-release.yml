@@ -7,7 +7,21 @@ on:
             - primary
 
 jobs:
+    pre_job:
+        continue-on-error: true
+        runs-on: ubuntu-20.04
+        outputs:
+            should_skip: ${{ steps.skip_check.outputs.should_skip }}
+        steps:
+            - name: "Check for workflow duplication"
+              id: skip_check
+              uses: fkirc/skip-duplicate-actions@master
+              with:
+                  github_token: ${{ github.token }}
+                  paths_ignore: '["**/README.md", "**/docs/**"]'
+
     test_each_new_commit:
+        needs: pre_job
         runs-on: ubuntu-20.04
         steps:
             - name: "Checkout"
@@ -49,7 +63,7 @@ jobs:
                   path: var/tests
 
     release_docker:
-        needs: [ test_each_new_commit ]
+        needs: [ test_each_new_commit, pre_job ]
         runs-on: ubuntu-20.04
         steps:
             - name: Checkout
