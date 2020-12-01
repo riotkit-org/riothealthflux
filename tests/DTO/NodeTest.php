@@ -17,12 +17,12 @@ class NodeTest extends TestCase
     {
         $upNode = new Node(
             name: 'test', checkedBy: 'PHPUnit', status: true,
-            url: 'http://localhost'
+            url: 'http://127.0.0.1'
         );
 
         $downNode = new Node(
             name: 'test', checkedBy: 'PHPUnit', status: false,
-            url: 'http://localhost'
+            url: 'http://127.0.0.1'
         );
 
         $this->assertTrue($upNode->isUp());

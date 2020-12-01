@@ -3,7 +3,7 @@ imports: []
 
 environment:
     PHP_BIN: "./php.sh"
-    INFLUXDB_URL: "http+influxdb://bakunin:bakunin@localhost:8086/hulajpole"
+    INFLUXDB_URL: "http+influxdb://bakunin:bakunin@127.0.0.1:8086/hulajpole"
 
 default_arguments: &default_arguments
     "--providers":

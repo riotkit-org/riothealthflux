@@ -17,7 +17,7 @@ class InfluxDBPersistenceTest extends IntegrationalTestCase
      */
     public function testPersist(): void
     {
-        $dsn       = 'http+influxdb://bakunin:bakunin@localhost:8086/hulajpole';
+        $dsn       = 'http+influxdb://bakunin:bakunin@127.0.0.1:8086/hulajpole';
         $persister = new InfluxDBPersistence(url: $dsn);
 
         //
@@ -28,7 +28,7 @@ class InfluxDBPersistenceTest extends IntegrationalTestCase
         $persister->persist(
             new Node(
                 name: $uniqueName, checkedBy: 'PHPUnit', status: true,
-                url: 'http://localhost:8000'
+                url: 'http://127.0.0.1:8000'
             )
         );
 
@@ -45,6 +45,6 @@ class InfluxDBPersistenceTest extends IntegrationalTestCase
         $this->assertEquals($uniqueName . '_http://localhost:8000', $lastAdded['ident']);
         $this->assertEquals($uniqueName, $lastAdded['name']);
         $this->assertEquals(true, $lastAdded['up']);
-        $this->assertEquals('http://localhost:8000', $lastAdded['url']);
+        $this->assertEquals('http://127.0.0.1:8000', $lastAdded['url']);
     }
 }

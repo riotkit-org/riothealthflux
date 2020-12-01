@@ -16,12 +16,12 @@ class InfracheckProviderTest extends IntegrationalTestCase
     public function testHandle(): void
     {
         $provider = new InfracheckProvider();
-        $checks = $provider->handle('Infracheck://http://localhost:8000');
+        $checks = $provider->handle('Infracheck://http://127.0.0.1:8000');
 
         $check = $checks[0];
 
         $this->assertEquals('dir-test', $check->getName());
-        $this->assertEquals('http://localhost:8000', $check->getUrl());
+        $this->assertEquals('http://127.0.0.1:8000', $check->getUrl());
         $this->assertEquals(true, $check->isUp());
     }
 }
