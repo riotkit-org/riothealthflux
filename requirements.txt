@@ -1,2 +1,2 @@
-rkd==2.3.3
+rkd --pre
 vjunit==0.6.1
