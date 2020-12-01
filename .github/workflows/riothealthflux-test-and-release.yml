@@ -30,25 +30,25 @@ jobs:
               run: "rkd :setup"
 
             # —— Tests —————————————————————————————————————————————————————————
-            - name: "Run tests"
-              run: "PHP_BIN=php rkd :run:tests"
+#            - name: "Run tests"
+#              run: "PHP_BIN=php rkd :run:tests"
 
             - name: PHPUnit tests
               uses: php-actions/phpunit@v1
               with:
                   memory_limit: 256M
 
-            # —— Reports ———————————————————————————————————————————————————————
-            - name: "Make HTML report from unit tests"
-              run: "rkd :test:unit:html"
-              if: ${{ always() }}
-
-            - name: "Archive results"
-              uses: actions/upload-artifact@v2
-              if: ${{ always() }}
-              with:
-                  name: tests-results
-                  path: var/tests
+#            # —— Reports ———————————————————————————————————————————————————————
+#            - name: "Make HTML report from unit tests"
+#              run: "rkd :test:unit:html"
+#              if: ${{ always() }}
+#
+#            - name: "Archive results"
+#              uses: actions/upload-artifact@v2
+#              if: ${{ always() }}
+#              with:
+#                  name: tests-results
+#                  path: var/tests
 
     release_docker:
         needs: [ test_each_new_commit ]
