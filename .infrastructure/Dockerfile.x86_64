@@ -4,12 +4,17 @@ ARG USER=riotkit
 ARG UID=1000
 ARG GID=1000
 
+ENV RIOT_PROVIDERS=""
+ENV INFLUXDB_URL=""
+ENV RIOT_LOG_PATH="/var/log/riothealthflux.log"
+
 RUN curl -s https://getcomposer.org/installer | php \
     && mv composer.phar /usr/bin/composer \
     && chmod +x /usr/bin/composer
 
 RUN mkdir -p /var/app \
-    && chown 1000:1000 /var/app \
+    && touch /var/log/riothealthflux.log \
+    && chown 1000:1000 /var/app /var/log/riothealthflux.log \
     && adduser \
     --disabled-password \
     --gecos "" \
