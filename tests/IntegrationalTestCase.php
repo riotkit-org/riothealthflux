@@ -28,6 +28,8 @@ class IntegrationalTestCase extends TestCase
 
     protected function waitForAddress(string $address, int $seconds = 10)
     {
+        print('!!!! ' . $address);
+
         $client = new Client(['http_errors' => false]);
         $statusCode = null;
 
