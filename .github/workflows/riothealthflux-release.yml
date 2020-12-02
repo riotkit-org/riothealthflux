@@ -1,5 +1,6 @@
 name: "Release pipeline"
 on:
+    push:
     create:
         tags:
             - v*
