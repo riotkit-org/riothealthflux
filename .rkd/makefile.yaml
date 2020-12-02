@@ -51,7 +51,12 @@ tasks:
         steps:
             - docker build . -f .infrastructure/Dockerfile.x86_64 -t quay.io/riotkit/riothealthflux:latest-release
             - docker tag quay.io/riotkit/riothealthflux:latest-release quay.io/riotkit/riothealthflux:${ARG_REF}
-            - "%RKD% --image quay.io/riotkit/riothealthflux:${ARG_REF} --propagate :docker:tag :docker:push"
+            - |
+                if [[ $ARG_REF =~ ^v[0-9\.]$ ]]; then
+                    echo " >> Is a release version, tagging"
+                    %RKD% --image quay.io/riotkit/riothealthflux:${ARG_REF} --propagate :docker:tag :docker:push
+                fi
+            - docker push quay.io/riotkit/riothealthflux:latest
 
     :release:dist-zip:
         description: Creates a distribution package

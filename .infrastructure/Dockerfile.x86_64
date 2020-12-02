@@ -1,4 +1,4 @@
-FROM php:8.0-rc-alpine
+FROM php:8.0-alpine
 
 ARG USER=riotkit
 ARG UID=1000
@@ -15,6 +15,7 @@ RUN curl -s https://getcomposer.org/installer | php \
 RUN mkdir -p /var/app \
     && touch /var/log/riothealthflux.log \
     && chown 1000:1000 /var/app /var/log/riothealthflux.log \
+    && addgroup --gid 1000 riotkit \
     && adduser \
     --disabled-password \
     --gecos "" \
@@ -26,5 +27,7 @@ RUN mkdir -p /var/app \
 
 ADD ./ /var/app
 WORKDIR /var/app
+USER riotkit
+RUN composer install
 
 ENTRYPOINT ["/var/app/.infrastructure/synchronous-background-process.sh"]
