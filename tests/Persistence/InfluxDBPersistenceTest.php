@@ -42,7 +42,7 @@ class InfluxDBPersistenceTest extends IntegrationalTestCase
         $lastAdded = $results[count($results) - 1];
 
         $this->assertEquals('PHPUnit', $lastAdded['checked_by']);
-        $this->assertEquals($uniqueName . '_http://localhost:8000', $lastAdded['ident']);
+        $this->assertEquals($uniqueName . '_http://127.0.0.1:8000', $lastAdded['ident']);
         $this->assertEquals($uniqueName, $lastAdded['name']);
         $this->assertEquals(true, $lastAdded['up']);
         $this->assertEquals('http://127.0.0.1:8000', $lastAdded['url']);
