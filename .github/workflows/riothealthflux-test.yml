@@ -8,7 +8,6 @@ on:
 
 jobs:
     test_each_new_commit:
-        needs: pre_job
         runs-on: ubuntu-20.04
         steps:
             - name: "Checkout"
