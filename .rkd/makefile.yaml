@@ -49,12 +49,15 @@ tasks:
             "ref":
                 help: "Tag name"
         steps:
-            - docker build . -f .infrastructure/Dockerfile.x86_64 -t quay.io/riotkit/riothealthflux:latest-release
-            - docker tag quay.io/riotkit/riothealthflux:latest-release quay.io/riotkit/riothealthflux:${ARG_REF}
+            - echo " >> Building for tag ${ARG_REF}"
+            - docker build . -f .infrastructure/Dockerfile.x86_64 -t quay.io/riotkit/riothealthflux:latest
+            - docker tag quay.io/riotkit/riothealthflux:latest quay.io/riotkit/riothealthflux:${ARG_REF}
             - |
                 if [[ $ARG_REF =~ ^v[0-9\.]+$ ]]; then
                     echo " >> Is a release version, tagging"
                     %RKD% --image quay.io/riotkit/riothealthflux:${ARG_REF} --propagate :docker:tag :docker:push
+                    docker tag quay.io/riotkit/riothealthflux:${ARG_REF} quay.io/riotkit/riothealthflux:latest-release
+                    docker push quay.io/riotkit/riothealthflux:latest-release
                 fi
             - docker push quay.io/riotkit/riothealthflux:latest
 
