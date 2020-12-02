@@ -2,6 +2,8 @@
 
 namespace Tests;
 
+use GuzzleHttp\Client;
+
 class IntegrationalTestCase extends TestCase
 {
     public function setUp(): void
@@ -9,6 +11,9 @@ class IntegrationalTestCase extends TestCase
         parent::setUp();
 
         exec('rkd :test-containers:clear :test-containers:setup');
+
+        $this->waitForAddress('http://localhost:8000');
+        $this->waitForAddress('http://localhost:8086/health');
     }
 
     public function tearDown(): void
@@ -19,5 +24,22 @@ class IntegrationalTestCase extends TestCase
     public static function tearDownAfterClass(): void
     {
         exec('rkd :test-containers:clear > /dev/null');
+    }
+
+    protected function waitForAddress(string $address, int $seconds = 10)
+    {
+        $client = new Client(['http_errors' => false]);
+        $statusCode = null;
+
+        while ($statusCode >= 300 || $statusCode === null) {
+            $statusCode = $client->get($address)->getStatusCode();
+
+            sleep(1);
+            $seconds--;
+
+            if ($seconds === 0) {
+                break;
+            }
+        }
     }
 }
