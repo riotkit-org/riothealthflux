@@ -1,0 +1,50 @@
+name: "Test"
+on:
+    push:
+    pull_request:
+        branches:
+            - master
+            - primary
+
+jobs:
+    test_each_new_commit:
+        needs: pre_job
+        runs-on: ubuntu-20.04
+        steps:
+            - name: "Checkout"
+              uses: actions/checkout@v1
+
+            # —— Dependencies —————————————————————————————————————————————————————————
+            - name: "Install build dependencies"
+              run: "sudo pip install -r ./requirements.txt"
+
+            - name: Setup PHP, extensions and composer
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: "8.0"
+                  extensions: openssl, json, swoole
+                  tools: symfony, composer
+              env:
+                  update: true
+
+            - name: "Install application dependencies"
+              run: "rkd :setup"
+
+            - name: "Prepare test containers"
+              run: "rkd :test-containers:setup"
+
+            # —— Tests —————————————————————————————————————————————————————————
+            - name: "Run tests"
+              run: "PHP_BIN=php rkd :run:tests"
+
+            # —— Reports ———————————————————————————————————————————————————————
+            - name: "Make HTML report from unit tests"
+              run: "rkd :test:unit:html"
+              if: ${{ always() }}
+
+            - name: "Archive results"
+              uses: actions/upload-artifact@v2
+              if: ${{ always() }}
+              with:
+                  name: tests-results
+                  path: var/tests
