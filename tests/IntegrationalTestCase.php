@@ -38,7 +38,7 @@ class IntegrationalTestCase extends TestCase
             $seconds--;
 
             if ($seconds === 0) {
-                break;
+                throw new \Exception('Still the ' . $address . ' is responding with ' . $statusCode . ', not 2xx');
             }
         }
     }
