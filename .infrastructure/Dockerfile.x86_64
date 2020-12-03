@@ -14,8 +14,8 @@ RUN curl -s https://getcomposer.org/installer | php \
 
 RUN mkdir -p /var/app \
     && touch /var/log/riothealthflux.log \
-    && chown 1000:1000 /var/app /var/log/riothealthflux.log \
-    && addgroup --gid 1000 riotkit \
+    && chown $UID:$GID /var/app /var/log/riothealthflux.log \
+    && addgroup --gid $GID riotkit \
     && adduser \
     --disabled-password \
     --gecos "" \
@@ -25,9 +25,14 @@ RUN mkdir -p /var/app \
     --uid "$UID" \
     "$USER"
 
+RUN apk --update --no-cache add bash curl
+
 ADD ./ /var/app
 WORKDIR /var/app
+RUN chown $UID:$GID /var/app -R
+
 USER riotkit
-RUN composer install
+RUN composer install \
+  && chmod +x /var/app/.infrastructure/synchronous-background-process.sh
 
 ENTRYPOINT ["/var/app/.infrastructure/synchronous-background-process.sh"]

@@ -8,3 +8,5 @@
 /.gitignore
 /.git
 /vendor
+/.infrastructure/Dockerfile.x86_64
+/.infrastructure/docker-compose.yml
