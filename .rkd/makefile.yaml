@@ -54,7 +54,7 @@ tasks:
             - docker build . -f .infrastructure/Dockerfile.x86_64 -t quay.io/riotkit/riothealthflux:latest
             - docker tag quay.io/riotkit/riothealthflux:latest quay.io/riotkit/riothealthflux:${ARG_REF}
             - |
-                if [[ $ARG_REF =~ ^v[0-9a-z\.\-]+$ ]]; then
+                if [[ $ARG_REF =~ ^v[0-9a-zA-Z\.\-]+$ ]]; then
                     echo " >> Is a release version, tagging"
                     %RKD% @ --image quay.io/riotkit/riothealthflux:${ARG_REF} --propagate :docker:tag :docker:push
                     docker tag quay.io/riotkit/riothealthflux:${ARG_REF} quay.io/riotkit/riothealthflux:latest-release
