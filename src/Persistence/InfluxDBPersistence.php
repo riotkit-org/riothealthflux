@@ -26,7 +26,8 @@ class InfluxDBPersistence implements PersistenceInterface
                     'checked_by' => $node->getCheckedBy(),
                     'name'       => $node->getName(),
                     'url'        => $node->getUrl(),
-                    'ident'      => $node->getName() . '_'. $node->getUrl()
+                    'ident'      => $node->getName() . '_'. $node->getUrl(),
+                    'up'         => $node->isUp()
                 ],
                 [
                     'up'     => $node->isUp(),
