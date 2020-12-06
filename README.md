@@ -89,7 +89,7 @@ Releasing
 ---------
 
 1. Create a release in Github releases
-2. Wait for pipeline to build and publish to PyPI
+2. Wait for pipeline to build and publish to docker registry
 
 Keywords
 --------
