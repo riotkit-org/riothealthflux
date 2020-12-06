@@ -6,7 +6,15 @@ Pushes information about healthchecks status into InfluxDB basing on data from U
 Usage with docker
 -----------------
 
-...
+```yaml
+    version: "2.4"
+    services:
+        healthflux:
+            image: quay.io/riotkit/riothealthflux:v3.0.0-RC11
+            environment:
+                INFLUXDB_URL: "http+influxdb://${INFLUXDB_USER}:${INFLUXDB_USER_PASSWORD}@influxdb:8086/${STATS_DB_NAME}"
+                RIOT_PROVIDERS: "UptimeRobot://aaaaa-bbbbbb;UptimeRobot://xxxx-yyyyyy;Infracheck://cccccc-ddddddd"
+```
 
 Usage without docker
 --------------------
