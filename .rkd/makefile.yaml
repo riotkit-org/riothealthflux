@@ -1,0 +1,80 @@
+version: org.riotkit.rkd/yaml/v1
+imports:
+    - rkt_utils.docker
+
+environment:
+    PHP_BIN: "./php.sh"
+    INFLUXDB_URL: "http+influxdb://bakunin:bakunin@127.0.0.1:8086/hulajpole"
+
+default_arguments: &default_arguments
+    "--providers":
+        help: "List of providers"
+
+tasks:
+    :setup:
+        description: Setup locally application
+        steps:
+            - composer install
+
+    :test-containers:setup:
+        description: Start containers required for running tests
+        steps:
+            - cd .infrastructure && docker-compose -p riothealthflux up -d
+
+    :test-containers:clear:
+        description: Clear containers used in tests
+        steps:
+            - cd .infrastructure && docker-compose -p riothealthflux rm -v -f -s || true
+
+    :run:test-collection:
+        description: Run a test collection on test containers
+        arguments:
+            <<: *default_arguments
+        steps: |
+            set -x
+            RIOT_PROVIDERS=${ARG_PROVIDERS} ${PHP_BIN} ./bin/console background-process -vvv
+
+    :run:tests:
+        description: Run automated tests
+        steps: |
+            set -x
+            ${PHP_BIN} ./vendor/bin/phpunit
+
+    :test:unit:html:
+        description: Create report in HTML format
+        steps: vjunit -f var/tests/unit.junit.xml -o var/tests/unit.junit.html
+
+    :release:docker:
+        description: Release a docker image
+        arguments:
+            "ref":
+                help: "Tag name"
+        steps:
+            - echo " >> Building for tag ${ARG_REF}"
+            - docker build . -f .infrastructure/Dockerfile.x86_64 -t quay.io/riotkit/riothealthflux:latest
+            - docker tag quay.io/riotkit/riothealthflux:latest quay.io/riotkit/riothealthflux:${ARG_REF}
+            - |
+                if [[ $ARG_REF =~ ^v[0-9a-zA-Z\.\-]+$ ]]; then
+                    echo " >> Is a release version, tagging"
+                    %RKD% @ --image quay.io/riotkit/riothealthflux:${ARG_REF} --propagate :docker:tag :docker:push
+                    docker tag quay.io/riotkit/riothealthflux:${ARG_REF} quay.io/riotkit/riothealthflux:latest-release
+                    docker push quay.io/riotkit/riothealthflux:latest-release
+                fi
+            - docker push quay.io/riotkit/riothealthflux:latest
+
+    :release:dist-zip:
+        description: Creates a distribution package
+        steps:
+            - composer install
+            - rm -f ./var/dist.tar.gz
+            - |
+                tar -zcvf ./var/dist.tar.gz  \
+                    --exclude=.env \
+                    --exclude=.venv \
+                    --exclude=var \
+                    --exclude=.phpunit.result.cache \
+                    --exclude=phpunit* \
+                    --exclude=tests \
+                    --exclude=.infrastructure \
+                    --exclude=.rkd \
+                    *

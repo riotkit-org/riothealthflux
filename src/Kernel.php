@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Riotkit\UptimeAdminBoard;
+namespace Riotkit\HealthFlux;
 
 use DI\ContainerBuilder;
 use DI\Definition\Source\DefinitionFile;

@@ -1,1 +1,12 @@
-*.sqlite3
+/.github
+/.venv
+/var
+/phpunit.xml
+/setup-venv.sh
+/requirements.txt
+/.phpunit.result.cache
+/.gitignore
+/.git
+/vendor
+/.infrastructure/Dockerfile.x86_64
+/.infrastructure/docker-compose.yml

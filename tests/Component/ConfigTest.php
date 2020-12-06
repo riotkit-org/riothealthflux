@@ -3,7 +3,7 @@
 namespace Tests\Riotkit\UptimeAdminBoard\Component;
 
 use Tests\TestCase;
-use Riotkit\UptimeAdminBoard\Component\Config;
+use Riotkit\HealthFlux\Component\Config;
 
 /**
  * @see Config

@@ -1,26 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace Riotkit\UptimeAdminBoard\Provider;
+namespace Riotkit\HealthFlux\Provider;
 
 use Psr\Log\LoggerInterface;
 
-class MultipleProvider implements ServerUptimeProvider
+class MultipleProvider implements ServerUptimeProviderInterface
 {
     /**
-     * @var ServerUptimeProvider[] $providers
+     * @param ServerUptimeProviderInterface[] $providers
+     * @param LoggerInterface $logger
      */
-    private $providers;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    public function __construct(array $providers, LoggerInterface $logger)
-    {
-        $this->providers = $providers;
-        $this->logger    = $logger;
-    }
+    public function __construct(private array $providers, private LoggerInterface $logger) { }
 
     /**
      * @inheritdoc
@@ -39,12 +29,12 @@ class MultipleProvider implements ServerUptimeProvider
     /**
      * @inheritdoc
      */
-    public function handle(string $url, string $proxyAddress = '', string $proxyAuth = ''): array
+    public function handle(string $url): array
     {
         foreach ($this->providers as $provider) {
             try {
                 if ($provider->canHandle($url)) {
-                    return $provider->handle($url, $proxyAddress, $proxyAuth);
+                    return $provider->handle($url);
                 }
             } catch (\Exception $exception) {
                 $this->logger->critical(

@@ -1,29 +1,23 @@
 {
-    "name": "wolnosciowiec/wolnosciowiec-uptime-admin-board",
+    "name": "riotkit-org/riothealthflux",
     "type": "project",
     "license": "Apache-2.0",
     "require": {
         "ext-json": "*",
-        "ext-sqlite3": "*",
         "ext-curl": "*",
-        "ext-pdo": "*",
         "php-di/php-di": "^6.0",
-        "doctrine/cache": "^1.7",
-        "symfony/http-foundation": "^4.2",
-        "twig/twig": "^2.10",
-        "robmorgan/phinx": "^0.10.7",
-        "doctrine/collections": "^1.6",
-        "symfony/console": "^4.3",
-        "monolog/monolog": "^1.24",
-        "predis/predis": "^1.1"
+        "symfony/console": "^5.2",
+        "monolog/monolog": "^2.1",
+        "influxdb/influxdb-php": "^1.15"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.1",
-        "symfony/var-dumper": "^4.3"
+        "phpunit/phpunit": "^8",
+        "symfony/var-dumper": "^5.2",
+        "mheap/phpunit-github-actions-printer": "^1.5"
     },
     "autoload": {
         "psr-4": {
-            "Riotkit\\UptimeAdminBoard\\": "src/"
+            "Riotkit\\HealthFlux\\": "src/"
         }
     },
     "autoload-dev": {
@@ -33,13 +27,12 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "composer dump-autoload -o",
-            "rm ./var/cache/* -rf",
-            "mkdir -p ./var/db",
-            "touch ./var/db/database.sqlite3"
-        ],
-        "web": [
-            "cd public && php -d variables_order=EGPCS -S 0.0.0.0:8019 index.php"
+            "composer dump-autoload -o"
         ]
+    },
+    "config": {
+        "platform": {
+            "php": "7.4"
+        }
     }
 }

@@ -1,14 +1,13 @@
-#!/usr/local/bin php
+#!/usr/bin/env php
 <?php declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ .'/../src/Console/ConsoleCommand.php';
 require_once __DIR__ .'/../src/Console/BackgroundProcessCommand.php';
 
-use Riotkit\Console\BackgroundProcessCommand;
+use Riotkit\HealthFlux\Console\BackgroundProcessCommand;
 use Symfony\Component\Console\Application;
 
-chdir(__DIR__ . '/../public');
 set_time_limit(3600);
 ini_set('memory_limit', '256M');
 

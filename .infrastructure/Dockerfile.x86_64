@@ -1,50 +1,38 @@
-FROM node:11.15.0-stretch-slim AS builder
+FROM php:8.0-alpine
 
-ADD src_frontend /app
-RUN apt-get update \
-    && apt-get install -y yarn make gcc g++ \
-    && cd /app \
-    && rm -rf ./node_modules \
-    && chown node:node /app -R \
-    && su node -c "yarn install" \
-    && su node -c "yarn build"
+ARG USER=riotkit
+ARG UID=1000
+ARG GID=1000
 
+ENV RIOT_PROVIDERS=""
+ENV INFLUXDB_URL=""
+ENV RIOT_LOG_PATH="/var/log/riothealthflux.log"
 
-FROM quay.io/riotkit/php-app:7.3-x86_64
+RUN curl -s https://getcomposer.org/installer | php \
+    && mv composer.phar /usr/bin/composer \
+    && chmod +x /usr/bin/composer
 
-ENV UAB_TITLE="System monitoring"\
-    UAB_PROVIDERS="" \
-    UAB_CSS="./assets/css/zapatista.css" \
-    UAB_CACHE="file" \
-    UAB_REDIS_HOST="localhost" \
-    UAB_REDIS_PORT=6379 \
-    UAB_TOR_MANAGEMENT_PORT=9052 \
-    UAB_TOR_PASSWORD="" \
-    UAB_PROXY="" \
-    UAB_EXPOSE_URLS=1 \
-    UAB_STATS_ENABLED=1 \
-    UAB_HISTORY_MAX_DAYS=5 \
-    UAB_DB_PATH=../var/db/database.sqlite3 \
-    UAB_DYNAMIC_DASHBOARD=true \
-    UAB_LOG_PATH=/var/log/uptime-admin-board.log
+RUN mkdir -p /var/app \
+    && touch /var/log/riothealthflux.log \
+    && chown $UID:$GID /var/app /var/log/riothealthflux.log \
+    && addgroup --gid $GID riotkit \
+    && adduser \
+    --disabled-password \
+    --gecos "" \
+    --home "/var/app" \
+    --ingroup "$USER" \
+    --no-create-home \
+    --uid "$UID" \
+    "$USER"
 
-ADD . /var/www/html
-COPY --from=builder /app/dist /var/www/html/public/dist
+RUN apk --update --no-cache add bash curl
 
-RUN cd /var/www/html \
-    && touch /var/log/uptime-admin-board.log \
-    && chown www-data:www-data /var/log/uptime-admin-board.log \
-    && mv /var/www/html/public/dist/* /var/www/html/public/ \
-    && rmdir public/dist \
-    && chown www-data:www-data /var/www/html -R \
-    \
-    && su www-data -s /bin/bash -c "make deploy" \
-    \
-    && cp /var/www/html/.infrastructure/synchronous-background-process.sh / \
-    && cp /var/www/html/.infrastructure/etc / -R \
-    && cp /var/www/html/.infrastructure/on-entrypoint.sh /entrypoint.d/ \
-    && chmod +x /entrypoint.d/on-entrypoint.sh \
-    \
-    && apt-get update \
-    && apt-get install sudo -y \
-    && apt-get clean
+ADD ./ /var/app
+WORKDIR /var/app
+RUN chown $UID:$GID /var/app -R
+
+USER riotkit
+RUN composer install \
+  && chmod +x /var/app/.infrastructure/synchronous-background-process.sh
+
+ENTRYPOINT ["/var/app/.infrastructure/synchronous-background-process.sh"]

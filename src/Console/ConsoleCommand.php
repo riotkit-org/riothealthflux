@@ -1,22 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace Riotkit\Console;
+namespace Riotkit\HealthFlux\Console;
 
 use Psr\Container\ContainerInterface;
-use Riotkit\UptimeAdminBoard\Kernel;
+use Riotkit\HealthFlux\Kernel;
 use Symfony\Component\Console\Command\Command;
 
 abstract class ConsoleCommand extends Command
 {
-    /**
-     * @var Kernel
-     */
-    protected $app;
-
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
+    protected Kernel $app;
+    protected ContainerInterface $container;
 
     public function __construct(string $name = null)
     {

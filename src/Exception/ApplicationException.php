@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace Riotkit\UptimeAdminBoard\Exception;
+namespace Riotkit\HealthFlux\Exception;
 
 /**
  * @codeCoverageIgnore

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Riotkit\UptimeAdminBoard\Service;
+namespace Riotkit\HealthFlux\Service;
 
 /**
  * @codeCoverageIgnore

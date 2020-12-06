@@ -1,24 +1,17 @@
-version: "2"
+version: "3.4"
 services:
-    frontend:
-        build:
-            context: .
-            dockerfile: Dev.Frontend.Dockerfile
-        volumes:
-            - "../src_frontend:/app"
-        expose:
-            - "8080"
-
-    backend:
-        image: quay.io/riotkit/uptime-admin-board
-        env_file:
-            - development-variables.env
-        volumes:
-            - "../:/var/www/html"
-
-    gateway:
-        build:
-            context: .
-            dockerfile: Dev.Gateway.Dockerfile
+    influxdb_1x:
+        image: influxdb:1.8
+        environment:
+            INFLUXDB_DB: hulajpole
+            INFLUXDB_ADMIN_USER: bakunin
+            INFLUXDB_ADMIN_PASSWORD: bakunin
         ports:
-            - "8080:80"
+            - 8086:8086
+
+    infracheck:
+        image: quay.io/riotkit/infracheck:v2.0-x86_64
+        volumes:
+            - ./container-files/infracheck:/data
+        ports:
+            - 8000:8000

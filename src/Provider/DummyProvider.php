@@ -1,29 +1,19 @@
 <?php declare(strict_types=1);
 
-namespace Riotkit\UptimeAdminBoard\Provider;
+namespace Riotkit\HealthFlux\Provider;
 
-use Riotkit\UptimeAdminBoard\Entity\Node;
+use Riotkit\HealthFlux\DTO\Node;
 
 /**
  * @codeCoverageIgnore
  */
-class DummyProvider implements ServerUptimeProvider
+class DummyProvider implements ServerUptimeProviderInterface
 {
     /**
-     * @var Node[] $results
+     * @param Node[] $results
+     * @param bool $canHandle
      */
-    private $results;
-
-    /**
-     * @var bool $canHandle
-     */
-    private $canHandle;
-
-    public function __construct(array $results, bool $canHandle = true)
-    {
-        $this->results = $results;
-        $this->canHandle = $canHandle;
-    }
+    public function __construct(private array $results, private bool $canHandle = true) { }
 
     /**
      * @inheritdoc
@@ -36,7 +26,7 @@ class DummyProvider implements ServerUptimeProvider
     /**
      * @inheritdoc
      */
-    public function handle(string $url, string $proxyAddress = '', string $proxyAuth = ''): array
+    public function handle(string $url): array
     {
         return $this->results;
     }
