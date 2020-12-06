@@ -7,6 +7,7 @@ ARG GID=1000
 ENV RIOT_PROVIDERS=""
 ENV INFLUXDB_URL=""
 ENV RIOT_LOG_PATH="/var/log/riothealthflux.log"
+ENV SLEEP_TIME=60
 
 RUN curl -s https://getcomposer.org/installer | php \
     && mv composer.phar /usr/bin/composer \
