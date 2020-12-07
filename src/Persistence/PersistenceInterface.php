@@ -7,4 +7,5 @@ use Riotkit\HealthFlux\DTO\Node;
 interface PersistenceInterface
 {
     public function persist(Node $node): void;
+    public function flush(): void;
 }

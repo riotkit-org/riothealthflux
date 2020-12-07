@@ -32,6 +32,8 @@ class InfluxDBPersistenceTest extends IntegrationalTestCase
             )
         );
 
+        $persister->flush();
+
         //
         // Let's verify
         //

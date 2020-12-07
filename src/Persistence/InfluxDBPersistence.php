@@ -10,6 +10,7 @@ use Riotkit\HealthFlux\DTO\Node;
 class InfluxDBPersistence implements PersistenceInterface
 {
     private Database $client;
+    private array    $pending = [];
 
     public function __construct(string $url)
     {
@@ -18,25 +19,29 @@ class InfluxDBPersistence implements PersistenceInterface
 
     public function persist(Node $node): void
     {
-        $this->client->writePoints([
-            new Point(
-                'riothealthflux',
-                $node->isUp(),
-                [
-                    'checked_by' => $node->getCheckedBy(),
-                    'name'       => $node->getName(),
-                    'url'        => $node->getUrl(),
-                    'ident'      => $node->getName() . '_'. $node->getUrl(),
-                    'up'         => $node->isUp()
-                ],
-                [
-                    'up'     => $node->isUp(),
-                    'up_int' => (int) $node->isUp(),
-                    'id'     => $node->getCheckId(),
-                    'url'    => $node->getUrl(),
-                    'name'   => $node->getName()
-                ]
-            )
-        ]);
+        $this->pending[] = new Point(
+            'riothealthflux',
+            $node->isUp(),
+            [
+                'checked_by' => $node->getCheckedBy(),
+                'name'       => $node->getName(),
+                'url'        => $node->getUrl(),
+                'ident'      => $node->getName() . '_'. $node->getUrl(),
+                'up'         => $node->isUp()
+            ],
+            [
+                'up'     => $node->isUp(),
+                'up_int' => (int) $node->isUp(),
+                'id'     => $node->getCheckId(),
+                'url'    => $node->getUrl(),
+                'name'   => $node->getName()
+            ]
+        );
+    }
+
+    public function flush(): void
+    {
+        $this->client->writePoints($this->pending);
+        $this->pending = [];
     }
 }

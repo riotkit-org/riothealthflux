@@ -41,6 +41,8 @@ class BackgroundProcessCommand extends ConsoleCommand
             }
         }
 
+        $persistence->flush();
+
         return 0;
     }
 }
