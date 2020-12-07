@@ -3,12 +3,13 @@
 namespace Riotkit\HealthFlux\Provider;
 
 use GuzzleHttp\Client;
+use Psr\Http\Message\ResponseInterface;
 use Riotkit\HealthFlux\DTO\Node;
 
 class InfracheckProvider implements ServerUptimeProviderInterface
 {
-    private const PREFIX        = 'Infracheck://';
-    private const PROVIDER_NAME = 'Infracheck';
+    protected const PREFIX        = 'Infracheck://';
+    protected const PROVIDER_NAME = 'Infracheck';
 
     /**
      * @inheritDoc
@@ -20,13 +21,22 @@ class InfracheckProvider implements ServerUptimeProviderInterface
 
     /**
      * @inheritDoc
+     *
+     * @throws \Exception
      */
     public function handle(string $url): array
     {
         $url = substr($url, strlen(static::PREFIX));
 
-        $http = new Client();
-        $asArray = json_decode($http->get($url)->getBody()->getContents(), true);
+        $response = $this->fetchResponse($url);
+        $asArray = json_decode($response->getBody()->getContents(), true);
+
+        if (!isset($asArray['checks'])) {
+            throw new \Exception(
+                'Invalid response from server. Got ' . $response->getStatusCode() . ' ' .
+                'code and body: ' . $response->getBody()->getContents()
+            );
+        }
 
         $result = [];
 
@@ -40,5 +50,11 @@ class InfracheckProvider implements ServerUptimeProviderInterface
         }
 
         return $result;
+    }
+
+    protected function fetchResponse(string $url): ResponseInterface
+    {
+        $http = new Client(['http_errors' => false]);
+        return $http->get($url);
     }
 }
