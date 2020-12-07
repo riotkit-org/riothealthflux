@@ -80,6 +80,9 @@ composer install
 export RIOT_PROVIDERS="Infracheck://http://127.0.0.1:8000;UptimeRobot://..." 
 export INFLUXDB_URL="http+influxdb://bakunin:bakunin@localhost:8086/hulajpole"
 
+# optional: Configure measurement name
+export INFLUXDB_MEASUREMENT_NAME="riothealthflux"
+
 # run each time you want to push the data to InfluxDB
 # put it in a loop with a sleep, or schedule with a crontab
 ./bin/console background-process

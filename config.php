@@ -41,7 +41,8 @@ if (!function_exists('get_env_array')) {
 }
 
 return array_map('unescape_env_value', [
-    'providers'           => get_env_array('RIOT_PROVIDERS', []),
-    'log_path'            => get_env_string('RIOT_LOG_PATH', './riothealthflux.log'),
-    'influxdb_url'        => get_env_string('INFLUXDB_URL', '')
+    'providers'                 => get_env_array('RIOT_PROVIDERS', []),
+    'log_path'                  => get_env_string('RIOT_LOG_PATH', './riothealthflux.log'),
+    'influxdb_url'              => get_env_string('INFLUXDB_URL', ''),
+    'influxdb_measurement_name' => get_env_string('INFLUXDB_MEASUREMENT_NAME', 'riothealthflux')
 ]);

@@ -39,7 +39,8 @@ return [
 
     InfluxDBPersistence::class => static function (Config $config) {
         return new InfluxDBPersistence(
-            $config->get('influxdb_url')
+            $config->get('influxdb_url'),
+            $config->get('influxdb_measurement_name')
         );
     },
 

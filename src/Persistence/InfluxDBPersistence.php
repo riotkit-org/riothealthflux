@@ -12,7 +12,7 @@ class InfluxDBPersistence implements PersistenceInterface
     private Database $client;
     private array    $pending = [];
 
-    public function __construct(string $url)
+    public function __construct(string $url, private string $measurementName)
     {
         $this->client = Client::fromDSN($url);
     }
@@ -20,7 +20,7 @@ class InfluxDBPersistence implements PersistenceInterface
     public function persist(Node $node): void
     {
         $this->pending[] = new Point(
-            'riothealthflux',
+            $this->measurementName,
             $node->isUp(),
             [
                 'checked_by' => $node->getCheckedBy(),

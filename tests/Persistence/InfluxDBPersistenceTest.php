@@ -18,7 +18,7 @@ class InfluxDBPersistenceTest extends IntegrationalTestCase
     public function testPersist(): void
     {
         $dsn       = 'http+influxdb://bakunin:bakunin@127.0.0.1:8086/hulajpole';
-        $persister = new InfluxDBPersistence(url: $dsn);
+        $persister = new InfluxDBPersistence(url: $dsn, measurementName: 'riothealthflux');
 
         //
         // Persist a data first
@@ -40,7 +40,6 @@ class InfluxDBPersistenceTest extends IntegrationalTestCase
 
         $client = Client::fromDSN($dsn);
         $results = $client->query('SELECT * FROM riothealthflux')->getPoints();
-
         $lastAdded = $results[count($results) - 1];
 
         $this->assertEquals('PHPUnit', $lastAdded['checked_by']);
@@ -48,5 +47,36 @@ class InfluxDBPersistenceTest extends IntegrationalTestCase
         $this->assertEquals($uniqueName, $lastAdded['name']);
         $this->assertEquals(true, $lastAdded['up']);
         $this->assertEquals('http://127.0.0.1:8000', $lastAdded['url']);
+    }
+
+    /**
+     * Checks that measurement name in InfluxDB could be customized
+     *
+     * @throws Client\Exception
+     * @throws \InfluxDB\Exception
+     */
+    public function testConfigurableMeasurementName(): void
+    {
+        $dsn       = 'http+influxdb://bakunin:bakunin@127.0.0.1:8086/hulajpole';
+        $persister = new InfluxDBPersistence(url: $dsn, measurementName: 'makhno');
+
+        $uniqueName = 'Kropotkin-' . uniqid();
+        $persister->persist(
+            new Node(
+                name: $uniqueName, checkedBy: 'PHPUnit', status: true,
+                url: 'http://127.0.0.1:8000'
+            )
+        );
+
+        $persister->flush();
+
+        //
+        // verification
+        //
+        $client = Client::fromDSN($dsn);
+        $results = $client->query('SELECT * FROM makhno')->getPoints();
+        $lastAdded = $results[count($results) - 1];
+
+        $this->assertEquals('PHPUnit', $lastAdded['checked_by']);
     }
 }
