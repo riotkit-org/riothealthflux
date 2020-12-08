@@ -24,6 +24,7 @@ class InfracheckProviderTest extends IntegrationalTestCase
         $this->assertEquals('dir-test', $check->getName());
         $this->assertEquals('http://127.0.0.1:8000', $check->getUrl());
         $this->assertEquals(true, $check->isUp());
+        $this->assertStringContainsString("'./' directory is present", $check->getDescription());
     }
 
     public function testThrowsExceptionWhenResponseIsIncorrectlyFormatted(): void

@@ -30,11 +30,12 @@ class InfluxDBPersistence implements PersistenceInterface
                 'up'         => $node->isUp()
             ],
             [
-                'up'     => $node->isUp(),
-                'up_int' => (int) $node->isUp(),
-                'id'     => $node->getCheckId(),
-                'url'    => $node->getUrl(),
-                'name'   => $node->getName()
+                'up'          => $node->isUp(),
+                'up_int'      => (int) $node->isUp(),
+                'id'          => $node->getCheckId(),
+                'url'         => $node->getUrl(),
+                'name'        => $node->getName(),
+                'description' => $node->getDescription()
             ]
         );
     }

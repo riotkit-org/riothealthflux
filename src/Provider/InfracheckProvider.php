@@ -45,7 +45,8 @@ class InfracheckProvider implements ServerUptimeProviderInterface
                 name: $name,
                 checkedBy: static::PROVIDER_NAME,
                 status: $details['status'],
-                url: $url
+                url: $url,
+                description: $details['output']
             );
         }
 

@@ -33,7 +33,8 @@ class UptimeRobotProvider implements ServerUptimeProviderInterface
                 name: $monitor['friendlyname'],
                 checkedBy: self::CHECK_TYPE,
                 status: (int) $monitor['status'] === 2 ? Node::STATUS_UP : Node::STATUS_DOWN,
-                url: $monitor['url'] ?? ''
+                url: $monitor['url'] ?? '',
+                description: ''
             );
         }
 

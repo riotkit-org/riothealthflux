@@ -13,7 +13,7 @@ class Node implements \JsonSerializable, \Stringable
 
     public function __construct(
         private string $name, private string $checkedBy, private ?bool $status = null,
-        private string $url = ''
+        private string $url = '', private string $description = ''
     ) { }
 
 
@@ -65,6 +65,11 @@ class Node implements \JsonSerializable, \Stringable
     public function getCheckId(): string
     {
         return hash('sha256', $this->name . '_' . $this->url);
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
     }
 
     /**
