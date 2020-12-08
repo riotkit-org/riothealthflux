@@ -1,7 +1,7 @@
 RiotKit HealthFlux
 ==================
 
-Pushes information about healthchecks status into InfluxDB basing on data from UptimeRobot service and Infracheck endpoints.
+Pushes information about healthchecks status into InfluxDB 1.8+/2.0+ basing on data from UptimeRobot service and Infracheck endpoints.
 
 ![.github/img.png](.github/img.png)
 
@@ -63,6 +63,9 @@ Usage with docker
                 # (consider fact that eg. UptimeRobot in free plan is running checks every 5 minutes. 
                 #  Infracheck is open and free, and can run checks more often as you wish)
                 SLEEP_TIME: "60"
+
+                # allows to customize the measurement name that is pushed to the InfluxDB
+                INFLUXDB_MEASUREMENT_NAME: "riothealthflux"
 ```
 
 Usage without docker
